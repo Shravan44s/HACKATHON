@@ -15,7 +15,6 @@ import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Navbar from '@/components/shared/Navbar';
-import ChatWidget from '@/components/shared/ChatWidget';
 import CountdownTimer from '@/components/shared/CountdownTimer';
 import FileUpload from '@/components/shared/FileUpload';
 import { HACKATHON_CONFIG } from '@/lib/auth';
@@ -78,10 +77,9 @@ export default function HackathonPage() {
     if (!mounted || !user) return null;
 
     return (
-        <div className="min-h-screen bg-background aurora-bg">
+        <div className="min-h-screen aurora-bg">
             <Navbar />
-            <ChatWidget />
-            <div className="max-w-4xl mx-auto px-4 pt-24 pb-16">
+            <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                     <div className="text-center mb-6">
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
@@ -101,7 +99,7 @@ export default function HackathonPage() {
                     {hasFinalSubmission && (
                         <Card className="mb-6 bg-green-500/5 border-green-500/20">
                             <CardContent className="pt-4 text-center">
-                                <p className="text-green-400 font-semibold">🏁 Final submission has been locked!</p>
+                                <p className="text-[var(--primary)] font-semibold">🏁 Final submission has been locked!</p>
                             </CardContent>
                         </Card>
                     )}
@@ -110,29 +108,29 @@ export default function HackathonPage() {
                         {/* Update Form */}
                         <div className="lg:col-span-3">
                             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                                <Card className="bg-white border-surface-border glow-border">
+                                <Card className="glass-card border-0 glow-border">
                                     <CardHeader><CardTitle>Push Update</CardTitle></CardHeader>
                                     <CardContent className="space-y-4">
                                         <div className="space-y-2">
                                             <Label>What changed?</Label>
-                                            <Textarea placeholder="Describe recent changes..." className="bg-surface-raised border-surface-border min-h-[80px]" {...register('whatChanged')} />
+                                            <Textarea placeholder="Describe recent changes..." className="bg-[var(--surface-raised)] border-[var(--surface-border)] min-h-[80px]" {...register('whatChanged')} />
                                             {errors.whatChanged && <p className="text-xs text-red-400">{errors.whatChanged.message}</p>}
                                         </div>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div className="space-y-2">
                                                 <Label>What&apos;s working?</Label>
-                                                <Textarea placeholder="Working features..." className="bg-surface-raised border-surface-border" {...register('whatsWorking')} />
+                                                <Textarea placeholder="Working features..." className="bg-[var(--surface-raised)] border-[var(--surface-border)]" {...register('whatsWorking')} />
                                             </div>
                                             <div className="space-y-2">
                                                 <Label>What&apos;s broken?</Label>
-                                                <Textarea placeholder="Known issues..." className="bg-surface-raised border-surface-border" {...register('whatsBroken')} />
+                                                <Textarea placeholder="Known issues..." className="bg-[var(--surface-raised)] border-[var(--surface-border)]" {...register('whatsBroken')} />
                                             </div>
                                         </div>
                                         <div className="space-y-2">
                                             <Label>Demo Link</Label>
                                             <div className="relative">
                                                 <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                                                <Input placeholder="https://your-demo.vercel.app" className="pl-10 bg-surface-raised border-surface-border" {...register('demoLink')} />
+                                                <Input placeholder="https://your-demo.vercel.app" className="pl-10 bg-[var(--surface-raised)] border-[var(--surface-border)]" {...register('demoLink')} />
                                             </div>
                                         </div>
                                     </CardContent>
@@ -170,15 +168,15 @@ export default function HackathonPage() {
 
                         {/* Updates & Judge Comments */}
                         <div className="lg:col-span-2 space-y-6">
-                            <Card className="bg-white border-surface-border">
-                                <CardHeader><CardTitle className="flex items-center gap-2 text-lg"><MessageCircle className="w-5 h-5 text-gold" /> Activity</CardTitle></CardHeader>
+                            <Card className="glass-card border-0">
+                                <CardHeader><CardTitle className="flex items-center gap-2 text-lg"><MessageCircle className="w-5 h-5 text-[var(--primary)]" /> Activity</CardTitle></CardHeader>
                                 <CardContent>
                                     {hackSubmissions.length === 0 ? (
                                         <p className="text-sm text-muted-foreground">No updates yet. Push your first update!</p>
                                     ) : (
                                         <div className="space-y-3 max-h-96 overflow-y-auto">
                                             {hackSubmissions.map((sub) => (
-                                                <div key={sub.id} className="p-3 rounded-xl bg-surface-raised border border-surface-border">
+                                                <div key={sub.id} className="p-3 rounded-xl bg-[var(--surface-raised)] border border-[var(--surface-border)]">
                                                     <div className="flex items-center justify-between mb-1">
                                                         <span className="text-xs text-muted-foreground">{new Date(sub.submittedAt).toLocaleTimeString()}</span>
                                                         {sub.content.isFinalSubmission && <Badge className="bg-red-500/20 text-red-400 text-xs">Final</Badge>}
@@ -186,7 +184,7 @@ export default function HackathonPage() {
                                                     <p className="text-sm">{sub.content.whatChanged}</p>
                                                     {sub.judgeComments?.map(jc => (
                                                         <div key={jc.id} className="mt-2 p-2 rounded bg-gold/5 border border-gold/20">
-                                                            <p className="text-xs text-gold font-medium">{jc.judge}:</p>
+                                                            <p className="text-xs text-[var(--primary)] font-medium">{jc.judge}:</p>
                                                             <p className="text-xs text-muted-foreground">{jc.comment}</p>
                                                         </div>
                                                     ))}

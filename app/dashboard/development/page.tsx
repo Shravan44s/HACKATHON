@@ -15,7 +15,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Navbar from '@/components/shared/Navbar';
-import ChatWidget from '@/components/shared/ChatWidget';
 import FileUpload from '@/components/shared/FileUpload';
 import { toast } from 'sonner';
 import type { FileAttachment } from '@/lib/types';
@@ -84,10 +83,9 @@ export default function DevelopmentPage() {
     if (!mounted || !user) return null;
 
     return (
-        <div className="min-h-screen bg-background aurora-bg">
+        <div className="min-h-screen aurora-bg">
             <Navbar />
-            <ChatWidget />
-            <div className="max-w-4xl mx-auto px-4 pt-24 pb-16">
+            <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                     <div className="text-center mb-10">
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
@@ -103,39 +101,39 @@ export default function DevelopmentPage() {
                         {/* Update Form */}
                         <div className="lg:col-span-3">
                             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                                <Card className="bg-white border-surface-border glow-border">
+                                <Card className="glass-card border-0 glow-border">
                                     <CardHeader><CardTitle>Progress Update</CardTitle></CardHeader>
                                     <CardContent className="space-y-4">
                                         <div className="space-y-2">
                                             <Label>What did you build today?</Label>
-                                            <Textarea placeholder="Describe your progress..." className="bg-surface-raised border-surface-border min-h-[100px]" {...register('progressUpdate')} />
+                                            <Textarea placeholder="Describe your progress..." className="bg-[var(--surface-raised)] border-[var(--surface-border)] min-h-[100px]" {...register('progressUpdate')} />
                                             {errors.progressUpdate && <p className="text-xs text-red-400">{errors.progressUpdate.message}</p>}
                                         </div>
                                         <div className="space-y-2">
                                             <Label>Blockers (optional)</Label>
-                                            <Textarea placeholder="Any challenges or blockers?" className="bg-surface-raised border-surface-border" {...register('blockers')} />
+                                            <Textarea placeholder="Any challenges or blockers?" className="bg-[var(--surface-raised)] border-[var(--surface-border)]" {...register('blockers')} />
                                         </div>
                                         <div className="space-y-2">
                                             <Label>Next Steps</Label>
-                                            <Textarea placeholder="What's planned next?" className="bg-surface-raised border-surface-border" {...register('nextSteps')} />
+                                            <Textarea placeholder="What's planned next?" className="bg-[var(--surface-raised)] border-[var(--surface-border)]" {...register('nextSteps')} />
                                             {errors.nextSteps && <p className="text-xs text-red-400">{errors.nextSteps.message}</p>}
                                         </div>
                                         <div className="space-y-2">
                                             <Label>GitHub Repository URL</Label>
                                             <div className="relative">
                                                 <GitBranch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                                                <Input placeholder="https://github.com/..." className="pl-10 bg-surface-raised border-surface-border" {...register('githubRepoUrl')} />
+                                                <Input placeholder="https://github.com/..." className="pl-10 bg-[var(--surface-raised)] border-[var(--surface-border)]" {...register('githubRepoUrl')} />
                                             </div>
                                         </div>
                                     </CardContent>
                                 </Card>
 
                                 {/* Milestones */}
-                                <Card className="bg-white border-surface-border">
+                                <Card className="glass-card border-0">
                                     <CardHeader><CardTitle>Milestone Checklist</CardTitle></CardHeader>
                                     <CardContent className="space-y-2">
                                         {milestones.map((m, i) => (
-                                            <div key={m.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-surface-raised">
+                                            <div key={m.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-[var(--surface-raised)]">
                                                 <Checkbox
                                                     checked={m.completed}
                                                     onCheckedChange={(checked) => {
@@ -161,7 +159,7 @@ export default function DevelopmentPage() {
 
                         {/* Build Log */}
                         <div className="lg:col-span-2">
-                            <Card className="bg-white border-surface-border">
+                            <Card className="glass-card border-0">
                                 <CardHeader><CardTitle className="flex items-center gap-2 text-lg"><Clock className="w-5 h-5 text-cyan" /> Build Log</CardTitle></CardHeader>
                                 <CardContent>
                                     {devSubmissions.length === 0 ? (
@@ -178,7 +176,7 @@ export default function DevelopmentPage() {
                                                     className="relative pl-10"
                                                 >
                                                     <div className="absolute left-2.5 top-1 w-3 h-3 rounded-full bg-cyan border-2 border-dark" />
-                                                    <div className="p-3 rounded-xl bg-surface-raised border border-surface-border">
+                                                    <div className="p-3 rounded-xl bg-[var(--surface-raised)] border border-[var(--surface-border)]">
                                                         <p className="text-xs text-muted-foreground mb-1">
                                                             {new Date(sub.submittedAt).toLocaleString()}
                                                         </p>
@@ -188,7 +186,7 @@ export default function DevelopmentPage() {
                                                         )}
                                                         {sub.adminComment && (
                                                             <div className="mt-2 p-2 rounded bg-gold/5 border border-gold/20">
-                                                                <p className="text-xs text-gold">Admin: {sub.adminComment}</p>
+                                                                <p className="text-xs text-[var(--primary)]">Admin: {sub.adminComment}</p>
                                                             </div>
                                                         )}
                                                     </div>

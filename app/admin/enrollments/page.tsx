@@ -53,7 +53,7 @@ export default function EnrollmentsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-background aurora-bg">
+        <div className="min-h-screen aurora-bg">
             <Navbar />
             <div className="max-w-7xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -64,7 +64,7 @@ export default function EnrollmentsPage() {
                             </h1>
                             <p className="text-muted-foreground mt-1">{filtered.length} teams</p>
                         </div>
-                        <Button onClick={exportCSV} variant="outline" className="border-surface-border hover:border-violet/30">
+                        <Button onClick={exportCSV} variant="outline" className="border-[var(--surface-border)] hover:border-violet/30">
                             <Download className="w-4 h-4 mr-2" /> Export CSV
                         </Button>
                     </div>
@@ -77,14 +77,14 @@ export default function EnrollmentsPage() {
                                 placeholder="Search teams..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="pl-10 bg-surface-raised border-surface-border"
+                                className="pl-10 bg-[var(--surface-raised)] border-[var(--surface-border)]"
                             />
                         </div>
                         <Select value={domainFilter} onValueChange={(val) => setDomainFilter(val || 'all')}>
-                            <SelectTrigger className="w-48 bg-surface-raised border-surface-border">
+                            <SelectTrigger className="w-48 bg-[var(--surface-raised)] border-[var(--surface-border)]">
                                 <SelectValue placeholder="Filter by domain" />
                             </SelectTrigger>
-                            <SelectContent className="bg-white border-surface-border">
+                            <SelectContent className="glass-card border-0">
                                 <SelectItem value="all">All Domains</SelectItem>
                                 {HACKATHON_CONFIG.domains.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
                             </SelectContent>
@@ -94,7 +94,7 @@ export default function EnrollmentsPage() {
                     {/* Teams List */}
                     <div className="space-y-3">
                         {filtered.length === 0 ? (
-                            <Card className="bg-white border-surface-border">
+                            <Card className="glass-card border-0">
                                 <CardContent className="py-12 text-center">
                                     <p className="text-muted-foreground">No teams found.</p>
                                 </CardContent>
@@ -107,7 +107,7 @@ export default function EnrollmentsPage() {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: i * 0.03 }}
                                 >
-                                    <Card className="bg-white border-surface-border hover:border-violet/20 transition-all">
+                                    <Card className="glass-card border-0 hover:border-violet/20 transition-all">
                                         <CardContent className="pt-4">
                                             <div
                                                 className="flex items-center justify-between cursor-pointer"
@@ -123,8 +123,8 @@ export default function EnrollmentsPage() {
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-3">
-                                                    <Badge className="bg-violet/20 text-violet">{team.domain}</Badge>
-                                                    <Badge variant="outline" className={team.status === 'enrolled' ? 'border-green-500/30 text-green-400' : ''}>
+                                                    <Badge className="bg-[var(--accent)] text-[var(--primary)]">{team.domain}</Badge>
+                                                    <Badge variant="outline" className={team.status === 'enrolled' ? 'border-green-500/30 text-[var(--primary)]' : ''}>
                                                         {team.status}
                                                     </Badge>
                                                     <span className="text-xs text-muted-foreground font-mono">{team.teamSize} members</span>
@@ -133,7 +133,7 @@ export default function EnrollmentsPage() {
                                             </div>
 
                                             {expandedTeam === team.id && (
-                                                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-4 pt-4 border-t border-surface-border">
+                                                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-4 pt-4 border-t border-[var(--surface-border)]">
                                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                         <div className="space-y-3">
                                                             <h4 className="text-sm font-semibold text-muted-foreground">Leader Details</h4>
@@ -147,7 +147,7 @@ export default function EnrollmentsPage() {
                                                             <h4 className="text-sm font-semibold text-muted-foreground">Team Members</h4>
                                                             <div className="space-y-2">
                                                                 {team.members.map(m => (
-                                                                    <div key={m.id} className="flex items-center gap-2 text-sm p-2 rounded-lg bg-surface-raised">
+                                                                    <div key={m.id} className="flex items-center gap-2 text-sm p-2 rounded-lg bg-[var(--surface-raised)]">
                                                                         <span className="font-medium">{m.name}</span>
                                                                         <span className="text-xs text-muted-foreground">({m.role})</span>
                                                                         <span className="text-xs text-muted-foreground ml-auto">{m.email}</span>
@@ -156,7 +156,7 @@ export default function EnrollmentsPage() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="mt-4 p-3 rounded-xl bg-surface-raised">
+                                                    <div className="mt-4 p-3 rounded-xl bg-[var(--surface-raised)]">
                                                         <h4 className="text-xs font-semibold text-muted-foreground mb-1">Problem Statement</h4>
                                                         <p className="text-sm">{team.problemStatement}</p>
                                                     </div>

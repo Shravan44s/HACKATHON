@@ -65,35 +65,35 @@ export default function AnnouncementsPage() {
     if (!mounted || !user) return null;
 
     return (
-        <div className="min-h-screen bg-background aurora-bg">
+        <div className="min-h-screen aurora-bg">
             <Navbar />
-            <div className="max-w-4xl mx-auto px-4 pt-24 pb-16">
+            <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                     <h1 className="font-display text-3xl font-bold flex items-center gap-2 mb-8">
-                        <Megaphone className="w-8 h-8 text-gold" /> Announcements
+                        <Megaphone className="w-8 h-8 text-[var(--primary)]" /> Announcements
                     </h1>
 
                     {/* Compose */}
-                    <Card className="bg-white border-surface-border glow-border mb-8">
+                    <Card className="glass-card border-0 glow-border mb-8">
                         <CardHeader><CardTitle>New Announcement</CardTitle></CardHeader>
                         <CardContent>
                             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                                 <div className="space-y-2">
                                     <Label>Title</Label>
-                                    <Input placeholder="Announcement title" className="bg-surface-raised border-surface-border" {...register('title')} />
+                                    <Input placeholder="Announcement title" className="bg-[var(--surface-raised)] border-[var(--surface-border)]" {...register('title')} />
                                     {errors.title && <p className="text-xs text-red-400">{errors.title.message}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Body</Label>
-                                    <Textarea placeholder="Write your announcement..." className="bg-surface-raised border-surface-border min-h-[120px]" {...register('body')} />
+                                    <Textarea placeholder="Write your announcement..." className="bg-[var(--surface-raised)] border-[var(--surface-border)] min-h-[120px]" {...register('body')} />
                                     {errors.body && <p className="text-xs text-red-400">{errors.body.message}</p>}
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="space-y-2">
                                         <Label>Target</Label>
                                         <Select defaultValue="all" onValueChange={(val) => setValue('target', (val || 'all') as 'all' | 'specific_team' | 'specific_phase')}>
-                                            <SelectTrigger className="bg-surface-raised border-surface-border"><SelectValue /></SelectTrigger>
-                                            <SelectContent className="bg-white border-surface-border">
+                                            <SelectTrigger className="bg-[var(--surface-raised)] border-[var(--surface-border)]"><SelectValue /></SelectTrigger>
+                                            <SelectContent className="glass-card border-0">
                                                 <SelectItem value="all">All Teams</SelectItem>
                                                 <SelectItem value="specific_team">Specific Team</SelectItem>
                                                 <SelectItem value="specific_phase">Specific Phase</SelectItem>
@@ -102,7 +102,7 @@ export default function AnnouncementsPage() {
                                     </div>
                                     <div className="flex items-end gap-3">
                                         <div className="flex items-center gap-2">
-                                            <Pin className="w-4 h-4 text-gold" />
+                                            <Pin className="w-4 h-4 text-[var(--primary)]" />
                                             <Label>Pin</Label>
                                             <Switch checked={pinned} onCheckedChange={setPinned} />
                                         </div>
@@ -123,13 +123,13 @@ export default function AnnouncementsPage() {
                         ) : (
                             announcements.map((a, i) => (
                                 <motion.div key={a.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
-                                    <Card className={`bg-white border-surface-border ${a.pinned ? 'border-gold/20' : ''}`}>
+                                    <Card className={`glass-card border-0 ${a.pinned ? 'border-gold/20' : ''}`}>
                                         <CardContent className="pt-4">
                                             <div className="flex items-start justify-between">
                                                 <div className="flex-1">
                                                     <div className="flex items-center gap-2 mb-1">
-                                                        {a.pinned && <Badge className="bg-gold/20 text-gold text-xs"><Pin className="w-3 h-3 mr-1" /> Pinned</Badge>}
-                                                        <Badge variant="outline" className="text-xs border-surface-border">{a.target === 'all' ? 'All Teams' : a.target}</Badge>
+                                                        {a.pinned && <Badge className="bg-amber-400/20 text-[var(--primary)] text-xs"><Pin className="w-3 h-3 mr-1" /> Pinned</Badge>}
+                                                        <Badge variant="outline" className="text-xs border-[var(--surface-border)]">{a.target === 'all' ? 'All Teams' : a.target}</Badge>
                                                     </div>
                                                     <h3 className="font-semibold mb-1">{a.title}</h3>
                                                     <p className="text-sm text-muted-foreground whitespace-pre-wrap">{a.body}</p>

@@ -66,7 +66,7 @@ export default function AdminDashboard() {
     ];
 
     return (
-        <div className="min-h-screen bg-background aurora-bg">
+        <div className="min-h-screen aurora-bg">
             <Navbar />
             <div className="max-w-7xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -86,7 +86,7 @@ export default function AdminDashboard() {
                         {statCards.map((s, i) => (
                             <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                                 <Link href={s.href}>
-                                    <Card className="bg-white border-surface-border hover:border-violet/30 transition-all cursor-pointer group">
+                                    <Card className="glass-card border-0 hover:border-violet/30 transition-all cursor-pointer group">
                                         <CardContent className="pt-6">
                                             <div className="flex items-center justify-between mb-3">
                                                 <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${s.color}15`, color: s.color }}>
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         {/* Phase Management */}
-                        <Card className="bg-white border-surface-border glow-border">
+                        <Card className="glass-card border-0 glow-border">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
                                     <Zap className="w-5 h-5 text-violet" /> Phase Management
@@ -113,14 +113,14 @@ export default function AdminDashboard() {
                             </CardHeader>
                             <CardContent className="space-y-3">
                                 {phases.map(p => (
-                                    <div key={p.id} className="flex items-center justify-between p-3 rounded-xl bg-surface-raised border border-surface-border">
+                                    <div key={p.id} className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface-raised)] border border-[var(--surface-border)]">
                                         <div className="flex items-center gap-3">
                                             <div className="w-8 h-8 rounded-lg bg-dark flex items-center justify-center text-sm">
                                                 {p.id === 'enrollment' && <UserCheck className="w-4 h-4 text-violet" />}
-                                                {p.id === 'ideation' && <Lightbulb className="w-4 h-4 text-gold" />}
+                                                {p.id === 'ideation' && <Lightbulb className="w-4 h-4 text-[var(--primary)]" />}
                                                 {p.id === 'development' && <Code className="w-4 h-4 text-cyan" />}
                                                 {p.id === 'hackathon' && <Zap className="w-4 h-4 text-red-400" />}
-                                                {p.id === 'results' && <Trophy className="w-4 h-4 text-green-400" />}
+                                                {p.id === 'results' && <Trophy className="w-4 h-4 text-[var(--primary)]" />}
                                             </div>
                                             <div>
                                                 <p className="text-sm font-medium">{p.name}</p>
@@ -134,7 +134,7 @@ export default function AdminDashboard() {
                         </Card>
 
                         {/* Submissions Chart */}
-                        <Card className="bg-white border-surface-border">
+                        <Card className="glass-card border-0">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
                                     <FileText className="w-5 h-5 text-cyan" /> Submissions
@@ -155,10 +155,10 @@ export default function AdminDashboard() {
                         </Card>
 
                         {/* Domain Distribution */}
-                        <Card className="bg-white border-surface-border">
+                        <Card className="glass-card border-0">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
-                                    <Trophy className="w-5 h-5 text-gold" /> Domains
+                                    <Trophy className="w-5 h-5 text-[var(--primary)]" /> Domains
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
@@ -189,7 +189,7 @@ export default function AdminDashboard() {
                             { href: '/admin/announcements', label: 'Announcements', icon: <Megaphone className="w-5 h-5" />, color: '#f59e0b' },
                         ].map(item => (
                             <Link key={item.href} href={item.href}>
-                                <Button variant="outline" className="w-full h-auto py-4 border-surface-border hover:border-violet/30 flex flex-col items-center gap-2">
+                                <Button variant="outline" className="w-full h-auto py-4 border-[var(--surface-border)] hover:border-violet/30 flex flex-col items-center gap-2">
                                     <span style={{ color: item.color }}>{item.icon}</span>
                                     <span className="text-sm">{item.label}</span>
                                 </Button>

@@ -6,21 +6,27 @@ export const DEMO_USERS = {
     participant: { email: 'participant@test.com', password: 'test123', name: 'Test Participant', role: 'participant' as const },
 };
 
-export function validateCredentials(email: string, password: string, role: 'admin' | 'participant') {
-    const demoUser = role === 'admin' ? DEMO_USERS.admin : DEMO_USERS.participant;
+// Known admin emails
+export const ADMIN_EMAILS = ['admin@makeitappen.com'];
 
-    // Accept demo credentials or any new participant registration
-    if (email === demoUser.email && password === demoUser.password) {
-        return {
-            id: role === 'admin' ? 'admin-001' : `user-${Date.now()}`,
-            email: demoUser.email,
-            name: demoUser.name,
-            role: demoUser.role,
-        };
+export function validateCredentials(email: string, password: string) {
+    const isAdmin = ADMIN_EMAILS.includes(email.toLowerCase().trim());
+
+    // Admin login
+    if (isAdmin) {
+        if (email === DEMO_USERS.admin.email && password === DEMO_USERS.admin.password) {
+            return {
+                id: 'admin-001',
+                email: DEMO_USERS.admin.email,
+                name: DEMO_USERS.admin.name,
+                role: 'admin' as const,
+            };
+        }
+        return null; // Wrong admin password
     }
 
-    // For participants, allow any credentials (mock)
-    if (role === 'participant' && email && password.length >= 4) {
+    // Participant: accept any email + password ≥ 4 chars
+    if (email && password.length >= 4) {
         return {
             id: `user-${Date.now()}`,
             email,
@@ -31,6 +37,7 @@ export function validateCredentials(email: string, password: string, role: 'admi
 
     return null;
 }
+
 
 export const AGENTS_CONFIG: AgentInfo[] = [
     {

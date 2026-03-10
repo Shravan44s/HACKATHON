@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { DM_Sans, JetBrains_Mono, Syne } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import ThemeScript from "@/components/shared/ThemeScript";
+import ChatWidget from "@/components/shared/ChatWidget";
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -16,15 +18,9 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500", "700"],
 });
 
-const syne = Syne({
-  variable: "--font-syne",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
-
 export const metadata: Metadata = {
   title: "Make It Happen | AI-Powered Hackathon Platform",
-  description: "The ultimate hackathon management platform with embedded AI agents. From enrollment to final presentation — make it happen.",
+  description: "The ultimate hackathon management platform with embedded AI agents.",
   keywords: ["hackathon", "AI", "platform", "competition", "coding"],
 };
 
@@ -34,21 +30,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${dmSans.variable} ${jetbrainsMono.variable} ${syne.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
         <TooltipProvider>
           {children}
           <Toaster
-            position="bottom-right"
+            position="bottom-left"
             toastOptions={{
               style: {
-                background: '#ffffff',
-                border: '1px solid #e2e8f0',
-                color: '#0f172a',
-                boxShadow: '0 8px 30px rgba(124, 58, 237, 0.08)',
+                background: 'var(--card)',
+                border: '1px solid var(--border)',
+                color: 'var(--card-foreground)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+                borderRadius: '0.875rem',
               },
             }}
           />
+          <ChatWidget />
         </TooltipProvider>
       </body>
     </html>

@@ -12,7 +12,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Navbar from '@/components/shared/Navbar';
-import ChatWidget from '@/components/shared/ChatWidget';
 import { toast } from 'sonner';
 import type { AgentType } from '@/lib/types';
 import { Bot, Send, Loader2, ArrowLeft, Copy, Sparkles } from 'lucide-react';
@@ -86,9 +85,8 @@ export default function AgentsPage() {
     // Agent Grid View
     if (!selectedAgent) {
         return (
-            <div className="min-h-screen bg-background aurora-bg">
+            <div className="min-h-screen aurora-bg">
                 <Navbar />
-                <ChatWidget />
                 <div className="max-w-6xl mx-auto px-4 pt-24 pb-16">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                         <div className="text-center mb-12">
@@ -118,7 +116,7 @@ export default function AgentsPage() {
                                     }}
                                     className="cursor-pointer group"
                                 >
-                                    <Card className="bg-white border-surface-border hover:border-violet/30 transition-all duration-300 h-full glow-border">
+                                    <Card className="glass-card border-0 hover:border-violet/30 transition-all duration-300 h-full glow-border">
                                         <CardContent className="pt-6">
                                             <div
                                                 className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-4 transition-transform group-hover:scale-110"
@@ -151,12 +149,11 @@ export default function AgentsPage() {
 
     // Agent Detail View
     return (
-        <div className="min-h-screen bg-background aurora-bg">
+        <div className="min-h-screen aurora-bg">
             <Navbar />
-            <ChatWidget />
-            <div className="max-w-4xl mx-auto px-4 pt-24 pb-16">
+            <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                    <Button variant="ghost" onClick={() => setSelectedAgent(null)} className="mb-6 text-muted-foreground hover:text-foreground">
+                    <Button variant="ghost" onClick={() => setSelectedAgent(null)} className="mb-6 text-muted-foreground hover:text-white">
                         <ArrowLeft className="w-4 h-4 mr-2" /> Back to Agents
                     </Button>
 
@@ -172,22 +169,22 @@ export default function AgentsPage() {
 
                     {/* Chat-based agents */}
                     {agentInfo?.isChat ? (
-                        <Card className="bg-white border-surface-border glow-border">
+                        <Card className="glass-card border-0 glow-border">
                             <CardContent className="pt-6">
-                                <div className="space-y-3 max-h-[400px] overflow-y-auto mb-4 p-4 rounded-xl bg-background">
+                                <div className="space-y-3 max-h-[400px] overflow-y-auto mb-4 p-4 rounded-xl bg-[var(--surface)]">
                                     {chatMessages.length === 0 && (
                                         <p className="text-sm text-muted-foreground text-center py-8">Start a conversation with {agentInfo.name}...</p>
                                     )}
                                     {chatMessages.map((msg, i) => (
                                         <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                            <div className={`max-w-[80%] px-4 py-2 rounded-xl text-sm whitespace-pre-wrap ${msg.role === 'user' ? 'bg-violet text-white' : 'bg-surface-raised border border-surface-border'}`}>
+                                            <div className={`max-w-[80%] px-4 py-2 rounded-xl text-sm whitespace-pre-wrap ${msg.role === 'user' ? 'bg-violet text-white' : 'bg-[var(--surface-raised)] border border-[var(--surface-border)]'}`}>
                                                 {msg.content}
                                             </div>
                                         </div>
                                     ))}
                                     {loading && (
                                         <div className="flex justify-start">
-                                            <div className="bg-surface-raised border border-surface-border rounded-xl px-4 py-3">
+                                            <div className="bg-[var(--surface-raised)] border border-[var(--surface-border)] rounded-xl px-4 py-3">
                                                 <Loader2 className="w-4 h-4 animate-spin text-violet" />
                                             </div>
                                         </div>
@@ -199,7 +196,7 @@ export default function AgentsPage() {
                                         onChange={(e) => setChatInput(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && sendChatMessage()}
                                         placeholder="Type your message..."
-                                        className="bg-surface-raised border-surface-border"
+                                        className="bg-[var(--surface-raised)] border-[var(--surface-border)]"
                                     />
                                     <Button onClick={sendChatMessage} disabled={loading} className="bg-violet hover:bg-violet-dark text-white">
                                         <Send className="w-4 h-4" />
@@ -210,7 +207,7 @@ export default function AgentsPage() {
                     ) : (
                         /* Form-based agents */
                         <div className="space-y-6">
-                            <Card className="bg-white border-surface-border glow-border">
+                            <Card className="glass-card border-0 glow-border">
                                 <CardHeader><CardTitle>Input</CardTitle></CardHeader>
                                 <CardContent className="space-y-4">
                                     {agentInfo?.inputFields?.map((field) => (
@@ -219,28 +216,28 @@ export default function AgentsPage() {
                                             {field.type === 'textarea' ? (
                                                 <Textarea
                                                     placeholder={`Enter ${field.label.toLowerCase()}...`}
-                                                    className="bg-surface-raised border-surface-border min-h-[80px]"
+                                                    className="bg-[var(--surface-raised)] border-[var(--surface-border)] min-h-[80px]"
                                                     value={formData[field.name] || ''}
                                                     onChange={(e) => setFormData(prev => ({ ...prev, [field.name]: e.target.value }))}
                                                 />
                                             ) : field.type === 'select' ? (
                                                 <Select onValueChange={(val) => { setFormData(prev => Object.assign({}, prev, { [field.name]: val || '' })); }}>
-                                                    <SelectTrigger className="bg-surface-raised border-surface-border"><SelectValue placeholder="Select..." /></SelectTrigger>
-                                                    <SelectContent className="bg-white border-surface-border">
+                                                    <SelectTrigger className="bg-[var(--surface-raised)] border-[var(--surface-border)]"><SelectValue placeholder="Select..." /></SelectTrigger>
+                                                    <SelectContent className="glass-card border-0">
                                                         {field.options?.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}
                                                     </SelectContent>
                                                 </Select>
                                             ) : (
                                                 <Input
                                                     placeholder={`Enter ${field.label.toLowerCase()}...`}
-                                                    className="bg-surface-raised border-surface-border"
+                                                    className="bg-[var(--surface-raised)] border-[var(--surface-border)]"
                                                     value={formData[field.name] || ''}
                                                     onChange={(e) => setFormData(prev => ({ ...prev, [field.name]: e.target.value }))}
                                                 />
                                             )}
                                         </div>
                                     ))}
-                                    <Button onClick={submitForm} disabled={loading} className="w-full bg-gradient-to-r from-violet to-cyan text-white py-5 rounded-xl font-semibold">
+                                    <Button onClick={submitForm} disabled={loading} className="w-full bg-gradient-to-r bg-[var(--primary)] text-[var(--primary-foreground)] py-5 rounded-xl font-semibold">
                                         {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Sparkles className="w-4 h-4 mr-2" />}
                                         Generate
                                     </Button>
@@ -249,7 +246,7 @@ export default function AgentsPage() {
 
                             {result && (
                                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-                                    <Card className="bg-white border-surface-border glow-border-cyan">
+                                    <Card className="glass-card border-0 glow-border-cyan">
                                         <CardHeader>
                                             <div className="flex items-center justify-between">
                                                 <CardTitle className="flex items-center gap-2"><Bot className="w-5 h-5 text-cyan" /> Result</CardTitle>

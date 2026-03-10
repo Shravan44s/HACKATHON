@@ -75,7 +75,7 @@ export default function EnrollPage() {
     };
 
     return (
-        <div className="min-h-screen bg-background aurora-bg">
+        <div className="min-h-screen aurora-bg">
             <Navbar />
             <div className="max-w-3xl mx-auto px-4 pt-24 pb-16 relative z-10">
                 {/* Decorative blobs */}
@@ -118,16 +118,16 @@ export default function EnrollPage() {
                             </h2>
                             <div className="space-y-2">
                                 <Label>Team Name</Label>
-                                <Input placeholder="Team Alpha" className="bg-surface-raised border-surface-border rounded-xl h-11" {...register('teamName')} />
+                                <Input placeholder="Team Alpha" className="bg-[var(--surface-raised)] border-[var(--surface-border)] rounded-xl h-11" {...register('teamName')} />
                                 {errors.teamName && <p className="text-xs text-red-500">{errors.teamName.message}</p>}
                             </div>
                             <div className="space-y-2">
                                 <Label>Project Domain</Label>
                                 <Select onValueChange={(val) => setValue('domain', String(val ?? ''))}>
-                                    <SelectTrigger className="bg-surface-raised border-surface-border rounded-xl h-11">
+                                    <SelectTrigger className="bg-[var(--surface-raised)] border-[var(--surface-border)] rounded-xl h-11">
                                         <SelectValue placeholder="Select domain" />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-white border-surface-border shadow-xl">
+                                    <SelectContent className="glass-card border-0 shadow-xl">
                                         {HACKATHON_CONFIG.domains.map((d) => (
                                             <SelectItem key={d} value={d}>{d}</SelectItem>
                                         ))}
@@ -148,27 +148,27 @@ export default function EnrollPage() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <Label>Full Name</Label>
-                                    <Input placeholder="John Doe" className="bg-surface-raised border-surface-border rounded-xl h-11" {...register('leader.name')} />
+                                    <Input placeholder="John Doe" className="bg-[var(--surface-raised)] border-[var(--surface-border)] rounded-xl h-11" {...register('leader.name')} />
                                     {errors.leader?.name && <p className="text-xs text-red-500">{errors.leader.name.message}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Email</Label>
-                                    <Input type="email" placeholder="john@email.com" className="bg-surface-raised border-surface-border rounded-xl h-11" {...register('leader.email')} />
+                                    <Input type="email" placeholder="john@email.com" className="bg-[var(--surface-raised)] border-[var(--surface-border)] rounded-xl h-11" {...register('leader.email')} />
                                     {errors.leader?.email && <p className="text-xs text-red-500">{errors.leader.email.message}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Phone</Label>
-                                    <Input placeholder="+91 9876543210" className="bg-surface-raised border-surface-border rounded-xl h-11" {...register('leader.phone')} />
+                                    <Input placeholder="+91 9876543210" className="bg-[var(--surface-raised)] border-[var(--surface-border)] rounded-xl h-11" {...register('leader.phone')} />
                                     {errors.leader?.phone && <p className="text-xs text-red-500">{errors.leader.phone.message}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label>College</Label>
-                                    <Input placeholder="MIT" className="bg-surface-raised border-surface-border rounded-xl h-11" {...register('leader.college')} />
+                                    <Input placeholder="MIT" className="bg-[var(--surface-raised)] border-[var(--surface-border)] rounded-xl h-11" {...register('leader.college')} />
                                     {errors.leader?.college && <p className="text-xs text-red-500">{errors.leader.college.message}</p>}
                                 </div>
                                 <div className="space-y-2 sm:col-span-2">
                                     <Label>Department</Label>
-                                    <Input placeholder="Computer Science" className="bg-surface-raised border-surface-border rounded-xl h-11" {...register('leader.department')} />
+                                    <Input placeholder="Computer Science" className="bg-[var(--surface-raised)] border-[var(--surface-border)] rounded-xl h-11" {...register('leader.department')} />
                                     {errors.leader?.department && <p className="text-xs text-red-500">{errors.leader.department.message}</p>}
                                 </div>
                             </div>
@@ -183,7 +183,7 @@ export default function EnrollPage() {
                         >
                             <div className="flex items-center justify-between">
                                 <h2 className="text-lg font-semibold">👥 Team Members</h2>
-                                <span className="text-sm text-muted-foreground font-mono bg-surface-raised px-3 py-1 rounded-lg border border-surface-border">
+                                <span className="text-sm text-muted-foreground font-mono bg-[var(--surface-raised)] px-3 py-1 rounded-lg border border-[var(--surface-border)]">
                                     Team Size: {teamSize}
                                 </span>
                             </div>
@@ -195,19 +195,19 @@ export default function EnrollPage() {
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: 20 }}
                                     transition={{ type: 'spring', stiffness: 200 }}
-                                    className="grid grid-cols-1 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-surface-raised border border-surface-border"
+                                    className="grid grid-cols-1 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-[var(--surface-raised)] border border-[var(--surface-border)]"
                                 >
                                     <div className="space-y-1">
                                         <Label className="text-xs">Name</Label>
-                                        <Input placeholder="Name" className="bg-white border-surface-border text-sm rounded-xl" {...register(`members.${index}.name`)} />
+                                        <Input placeholder="Name" className="glass-card border-0 text-sm rounded-xl" {...register(`members.${index}.name`)} />
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-xs">Email</Label>
-                                        <Input placeholder="email" className="bg-white border-surface-border text-sm rounded-xl" {...register(`members.${index}.email`)} />
+                                        <Input placeholder="email" className="glass-card border-0 text-sm rounded-xl" {...register(`members.${index}.email`)} />
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-xs">Role</Label>
-                                        <Input placeholder="Developer" className="bg-white border-surface-border text-sm rounded-xl" {...register(`members.${index}.role`)} />
+                                        <Input placeholder="Developer" className="glass-card border-0 text-sm rounded-xl" {...register(`members.${index}.role`)} />
                                     </div>
                                     <div className="flex items-end">
                                         {fields.length > 1 && (
@@ -225,7 +225,7 @@ export default function EnrollPage() {
                                         type="button"
                                         variant="outline"
                                         onClick={() => append({ id: crypto.randomUUID(), name: '', email: '', role: '' })}
-                                        className="w-full border-dashed border-surface-border hover:border-violet/30 hover:bg-violet/5 rounded-xl"
+                                        className="w-full border-dashed border-[var(--surface-border)] hover:border-violet/30 hover:bg-violet/5 rounded-xl"
                                     >
                                         <Plus className="w-4 h-4 mr-2" /> Add Member
                                     </Button>
@@ -244,7 +244,7 @@ export default function EnrollPage() {
                             <h2 className="text-lg font-semibold">📋 Problem Statement</h2>
                             <Textarea
                                 placeholder="Describe the problem your team wants to solve..."
-                                className="bg-surface-raised border-surface-border min-h-[120px] rounded-xl"
+                                className="bg-[var(--surface-raised)] border-[var(--surface-border)] min-h-[120px] rounded-xl"
                                 {...register('problemStatement')}
                             />
                             {errors.problemStatement && <p className="text-xs text-red-500">{errors.problemStatement.message}</p>}
@@ -255,7 +255,7 @@ export default function EnrollPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.7 }}
-                            className="flex items-start gap-3 p-4 rounded-2xl bg-surface-raised border border-surface-border"
+                            className="flex items-start gap-3 p-4 rounded-2xl bg-[var(--surface-raised)] border border-[var(--surface-border)]"
                         >
                             <Checkbox
                                 id="agreement"
@@ -271,7 +271,7 @@ export default function EnrollPage() {
                             <Button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full bg-gradient-to-r from-violet to-indigo text-white py-6 text-lg font-semibold rounded-2xl shadow-xl shadow-violet/20"
+                                className="w-full bg-gradient-to-r bg-[var(--primary)] text-[var(--primary-foreground)] py-6 text-lg font-semibold rounded-2xl shadow-xl shadow-violet/20"
                             >
                                 {loading ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : <Rocket className="w-5 h-5 mr-2" />}
                                 Enroll Team

@@ -1,75 +1,39 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import Navbar from '@/components/shared/Navbar';
 import CountdownTimer from '@/components/shared/CountdownTimer';
 import { HACKATHON_CONFIG } from '@/lib/auth';
-import { Sparkles, Bot, Zap, BarChart3, Users, Shield, Rocket, ArrowRight, Star, Code, Lightbulb, Cpu, Boxes, Globe, ChevronDown } from 'lucide-react';
+import {
+  Rocket, ArrowRight, ChevronDown, Layers, Box, Component, Network, Cpu, ShieldCheck
+} from 'lucide-react';
 
-
-
-/* ─── Feature cards ─── */
 const features = [
-  { icon: <Bot className="w-6 h-6" />, title: 'AI Agents Hub', desc: '9 specialized AI agents to brainstorm, code, pitch, and design.', color: '#7c3aed', emoji: '🤖' },
-  { icon: <Zap className="w-6 h-6" />, title: 'Live Hackathon', desc: '24-hour live coding sprint with real-time updates and judge feedback.', color: '#0891b2', emoji: '⚡' },
-  { icon: <Lightbulb className="w-6 h-6" />, title: 'Phase Tracking', desc: 'Progress from ideation through development to final presentation.', color: '#d97706', emoji: '💡' },
-  { icon: <BarChart3 className="w-6 h-6" />, title: 'Fair Evaluation', desc: 'Multi-round scoring with transparent leaderboards.', color: '#059669', emoji: '📊' },
-  { icon: <Users className="w-6 h-6" />, title: 'Team Management', desc: 'Seamless enrollment and collaboration tools.', color: '#e11d48', emoji: '👥' },
-  { icon: <Shield className="w-6 h-6" />, title: 'Admin Dashboard', desc: 'Full control panel for organizers with real-time analytics.', color: '#4f46e5', emoji: '🛡️' },
+  { icon: <Cpu className="w-5 h-5" />, title: 'AI Automation', desc: 'Embedded AI agents handle boilerplate code, test generation, and review processes.' },
+  { icon: <Network className="w-5 h-5" />, title: 'Live Collab', desc: 'Real-time synchronization for code logic, architecture planning, and deployment tracking.' },
+  { icon: <Component className="w-5 h-5" />, title: 'Phase Progression', desc: 'Structured checkpoints from initial ideation straight through to the final pitch.' },
+  { icon: <Box className="w-5 h-5" />, title: 'Clear Evaluation', desc: 'Transparent judging paradigms with multiple rounds and instant leaderboard updates.' },
+  { icon: <Layers className="w-5 h-5" />, title: 'Team Sync', desc: 'Granular access controls, role assignments, and integrated collaborative workspaces.' },
+  { icon: <ShieldCheck className="w-5 h-5" />, title: 'Control Panel', desc: 'Command center for organizers to manage the entire hackathon lifecycle.' },
 ];
 
 const stats = [
-  { label: 'AI Agents', value: '9+', icon: <Bot className="w-5 h-5" /> },
-  { label: 'Phases', value: '5', icon: <Code className="w-5 h-5" /> },
-  { label: 'Teams', value: '∞', icon: <Users className="w-5 h-5" /> },
-  { label: 'Hours', value: '24', icon: <Zap className="w-5 h-5" /> },
+  { label: 'AI Agents', value: '9+' },
+  { label: 'Phases', value: '5' },
+  { label: 'Teams', value: '∞' },
+  { label: 'Hours', value: '24' },
 ];
 
-/* ─── Marquee logos ─── */
-const techLogos = ['React', 'Next.js', 'Python', 'TensorFlow', 'Firebase', 'MongoDB', 'Docker', 'Gemini AI', 'TypeScript', 'Node.js', 'PostgreSQL', 'Flutter'];
-
-/* ─── Animated text words ─── */
+const techLogos = ['React', 'Next.js', 'Python', 'TensorFlow', 'PostgreSQL', 'Docker', 'Gemini AI', 'TypeScript', 'Node.js', 'Vercel'];
 const heroWords = ['Innovate.', 'Collaborate.', 'Ship.', 'Win.'];
 
-/* ─── Mouse-tracking card ─── */
-function MagneticCard({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 200, damping: 20 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 200, damping: 20 });
-
-  const handleMouse = useCallback((e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    x.set((e.clientX - rect.left) / rect.width - 0.5);
-    y.set((e.clientY - rect.top) / rect.height - 0.5);
-  }, [x, y]);
-
-  const resetMouse = useCallback(() => { x.set(0); y.set(0); }, [x, y]);
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMouse}
-      onMouseLeave={resetMouse}
-      style={{ rotateX, rotateY, transformPerspective: 800 }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-/* ─── Cycling text ─── */
 function CyclingText() {
   const [index, setIndex] = useState(0);
   useEffect(() => {
-    const interval = setInterval(() => setIndex(i => (i + 1) % heroWords.length), 2000);
-    return () => clearInterval(interval);
+    const iv = setInterval(() => setIndex(i => (i + 1) % heroWords.length), 2200);
+    return () => clearInterval(iv);
   }, []);
   return (
     <span className="inline-block relative h-[1.15em] overflow-hidden align-bottom">
@@ -89,271 +53,242 @@ function CyclingText() {
   );
 }
 
+function ShootingStars() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+
+  return (
+    <div className="shooting-star-container">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <div
+          key={i}
+          className="shooting-star"
+          style={{
+            top: `${Math.random() * -20}%`,
+            left: `${Math.random() * 120}%`,
+            width: `${150 + Math.random() * 250}px`,
+            animationDelay: `${Math.random() * 5}s`,
+            animationDuration: `${2 + Math.random() * 3}s`,
+            opacity: 0.5 + Math.random() * 0.5
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function LandingPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
-  const heroY = useTransform(scrollYProgress, [0, 0.3], [0, -120]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
-  const parallax1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
-  const parallax2 = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const heroY = useTransform(scrollYProgress, [0, 0.3], [0, -60]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-background overflow-hidden">
+    <div ref={containerRef} className="min-h-screen overflow-clip">
       <Navbar />
 
       {/* ═══ HERO ═══ */}
-      <motion.section
-        style={{ y: heroY, opacity: heroOpacity, scale: heroScale }}
-        className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-20"
-      >
-        {/* Animated dot grid */}
-        <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" />
+      <motion.section style={{ y: heroY, opacity: heroOpacity }} className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-24 pb-10">
 
-        {/* Aurora blobs */}
-        <motion.div style={{ y: parallax1 }} className="absolute top-10 left-[15%] w-[500px] h-[500px] bg-violet/6 rounded-full blur-[100px] animate-morph pointer-events-none" />
-        <motion.div style={{ y: parallax2, animationDelay: '-4s' }} className="absolute bottom-10 right-[10%] w-[600px] h-[600px] bg-cyan/5 rounded-full blur-[120px] animate-morph pointer-events-none" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-gold/3 rounded-full blur-[80px] animate-morph pointer-events-none" style={{ animationDelay: '-8s' }} />
+        {/* Ambient structure */}
+        <ShootingStars />
+        <div className="absolute top-[-5%] left-[20%] w-[600px] h-[600px] rounded-full blur-[140px] animate-morph pointer-events-none opacity-[0.14] dark:opacity-[0.18]"
+          style={{ background: 'var(--primary)' }} />
+        <div className="absolute bottom-[5%] right-[15%] w-[450px] h-[450px] rounded-full blur-[120px] animate-morph pointer-events-none opacity-[0.10] dark:opacity-[0.14]"
+          style={{ background: 'var(--primary)', animationDelay: '-5s' }} />
+        <div className="absolute inset-0 dot-grid opacity-[0.08] dark:opacity-[0.15] pointer-events-none" />
 
-
-
-        {/* Badge */}
+        {/* Live badge */}
         <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.8 }}
+          initial={{ opacity: 0, y: 24, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ delay: 0.2, type: 'spring', stiffness: 120, damping: 14 }}
           className="relative z-10 mb-8"
         >
-          <div className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-white/80 backdrop-blur-xl border border-surface-border shadow-xl shadow-violet/5">
-            <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}>
-              <Sparkles className="w-4 h-4 text-violet" />
-            </motion.div>
-            <span className="text-sm font-semibold text-foreground">{HACKATHON_CONFIG.name}</span>
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 glass pearl-border rounded-full shadow-sm">
+            <span className="relative flex h-2 w-2 ml-1">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+            </span>
+            <span className="text-xs font-semibold text-foreground/80 tracking-wide uppercase">{HACKATHON_CONFIG.name}</span>
           </div>
         </motion.div>
 
         {/* Title */}
-        <div className="relative z-10 text-center mb-6 overflow-hidden">
+        <div className="relative z-10 text-center mb-6">
           <motion.h1
-            initial={{ opacity: 0, y: 80, filter: 'blur(12px)' }}
+            initial={{ opacity: 0, y: 50, filter: 'blur(12px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-display text-6xl sm:text-7xl md:text-[5.5rem] font-extrabold leading-[0.92] tracking-tight"
+            transition={{ delay: 0.35, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="font-display text-5xl sm:text-7xl md:text-[6.5rem] font-extrabold leading-[0.95] tracking-tight text-foreground"
           >
-            <span className="text-foreground">Make It</span>
-            <br />
-            <span className="gradient-text">Happen</span>
+            Make It<br />
+            <span className="text-[var(--primary)] drop-shadow-sm">Happen</span>
           </motion.h1>
         </div>
 
-        {/* Subtitle with cycling text */}
+        {/* Subtitle */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="relative z-10 text-center mb-4"
+          transition={{ delay: 0.6 }}
+          className="relative z-10 text-center mb-6"
         >
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            The AI-powered hackathon platform where teams
+          <p className="text-base sm:text-lg text-muted-foreground max-w-lg mx-auto leading-relaxed font-medium">
+            The intelligent hackathon ecosystem where precise engineering teams
           </p>
-          <div className="mt-2 text-3xl sm:text-4xl font-display font-extrabold">
+          <div className="mt-3 text-3xl sm:text-4xl font-display font-bold text-foreground">
             <CyclingText />
           </div>
         </motion.div>
 
-        {/* CTAs */}
+        {/* CTAs — Apple style */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, type: 'spring', stiffness: 80 }}
-          className="relative z-10 flex flex-col sm:flex-row gap-4 mt-8"
+          transition={{ delay: 0.85, type: 'spring', stiffness: 80 }}
+          className="relative z-10 flex flex-col sm:flex-row gap-3 mt-8"
         >
           <Link href="/enroll">
-            <motion.div whileHover={{ scale: 1.06, y: -3 }} whileTap={{ scale: 0.96 }}>
-              <Button size="lg" className="bg-gradient-to-r from-violet via-indigo to-violet-dark text-white px-10 py-7 text-lg rounded-2xl shadow-2xl shadow-violet/30 font-bold relative overflow-hidden group">
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                <Rocket className="w-5 h-5 mr-2.5" />
-                Enroll Your Team
-              </Button>
-            </motion.div>
+            <motion.span
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="btn-primary inline-flex items-center justify-center min-w-[160px] gap-2 h-11 px-7 rounded-xl text-[13px] shadow-md cursor-pointer"
+            >
+              Enroll Team
+            </motion.span>
           </Link>
           <Link href="/login">
-            <motion.div whileHover={{ scale: 1.06, y: -3 }} whileTap={{ scale: 0.96 }}>
-              <Button size="lg" variant="outline" className="px-10 py-7 text-lg rounded-2xl border-2 border-surface-border bg-white/70 backdrop-blur-sm shadow-xl font-bold hover:border-violet/30 hover:shadow-violet/10">
-                Admin Login <ArrowRight className="w-5 h-5 ml-2.5" />
-              </Button>
-            </motion.div>
+            <motion.span
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="btn-glass inline-flex items-center justify-center min-w-[160px] gap-2 h-11 px-7 rounded-xl text-[13px] cursor-pointer"
+            >
+              Platform Login <ArrowRight className="w-4 h-4" />
+            </motion.span>
           </Link>
         </motion.div>
 
         {/* Countdown */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="relative z-10 mt-16"
+          transition={{ delay: 1.1 }}
+          className="relative z-10 mt-14 mb-8"
         >
-          <CountdownTimer targetDate={HACKATHON_CONFIG.startDate} label="Hackathon Starts In" />
+          <CountdownTimer targetDate={HACKATHON_CONFIG.startDate} label="T-Minus" />
         </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-        >
-          <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}>
-            <div className="flex flex-col items-center gap-2 text-muted-foreground">
-              <span className="text-xs font-medium tracking-wider uppercase">Scroll to explore</span>
-              <ChevronDown className="w-5 h-5" />
+        {/* Scroll hint */}
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.2 }}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
+          <motion.div animate={{ y: [0, 5, 0] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}>
+            <div className="flex flex-col items-center gap-1.5 text-foreground/30 hover:text-foreground/60 transition-colors cursor-pointer">
+              <span className="text-[9px] font-bold tracking-[0.25em] uppercase">Scroll</span>
+              <ChevronDown className="w-3.5 h-3.5" />
             </div>
           </motion.div>
         </motion.div>
-
-
       </motion.section>
 
       {/* ═══ TECH MARQUEE ═══ */}
-      <section className="relative z-10 py-12 border-y border-surface-border bg-surface-raised/50 overflow-hidden">
-        <p className="text-center text-xs font-medium text-muted-foreground uppercase tracking-widest mb-6">Built with the best tech stack</p>
-        <div className="relative">
-          <div className="flex animate-[marquee_25s_linear_infinite]">
-            {[...techLogos, ...techLogos].map((logo, i) => (
-              <div key={i} className="flex-shrink-0 mx-8 px-6 py-2.5 rounded-xl bg-white border border-surface-border shadow-sm">
-                <span className="text-sm font-semibold text-muted-foreground whitespace-nowrap">{logo}</span>
-              </div>
-            ))}
-          </div>
+      <section className="relative z-10 py-6 border-y border-[var(--border)] overflow-hidden bg-white/20 dark:bg-black/20 backdrop-blur-sm">
+        <p className="text-center text-[10px] font-bold text-muted-foreground uppercase tracking-[0.25em] mb-4">Powered by modern infrastructure</p>
+        <div className="flex animate-[marquee_32s_linear_infinite]">
+          {[...techLogos, ...techLogos].map((logo, i) => (
+            <div key={i} className="flex-shrink-0 mx-3 px-3.5 py-1.5 glass rounded-full border border-[var(--border)] shadow-sm">
+              <span className="text-[11px] font-bold text-foreground/50 whitespace-nowrap">{logo}</span>
+            </div>
+          ))}
         </div>
+        <style jsx>{`@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`}</style>
       </section>
 
       {/* ═══ STATS ═══ */}
-      <section className="relative z-10 py-16 max-w-4xl mx-auto px-4">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
+      <section className="relative z-10 py-20 max-w-5xl mx-auto px-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((s, i) => (
-            <MagneticCard key={s.label} className="cursor-default">
-              <motion.div
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, type: 'spring', stiffness: 120 }}
-                className="premium-card p-6 text-center hover-lift"
-              >
-                <div className="flex items-center justify-center text-violet mb-2">{s.icon}</div>
-                <div className="font-display text-4xl font-extrabold gradient-text-violet">{s.value}</div>
-                <p className="text-xs text-muted-foreground mt-1 font-semibold uppercase tracking-wide">{s.label}</p>
-              </motion.div>
-            </MagneticCard>
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, y: 24, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: i * 0.1, type: 'spring', stiffness: 100 }}
+              className="glass-card p-6 text-center border-[var(--border)]"
+            >
+              <div className="font-display text-4xl font-extrabold text-[var(--primary)] mb-2 drop-shadow-sm">{s.value}</div>
+              <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.2em]">{s.label}</p>
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* ═══ FEATURES ═══ */}
-      <section className="py-24 px-4 max-w-6xl mx-auto aurora-bg">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet/5 border border-violet/10 mb-6">
-            <Sparkles className="w-4 h-4 text-violet" />
-            <span className="text-sm font-semibold text-violet">Features</span>
+      <section className="py-24 px-4 max-w-6xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 glass pearl-border rounded-full mb-6 shadow-sm">
+            <Layers className="w-3.5 h-3.5" style={{ color: 'var(--primary)' }} />
+            <span className="text-[11px] font-bold text-foreground/70 uppercase tracking-wide">Platform Architecture</span>
           </div>
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight mb-4">
-            Everything You Need to <span className="gradient-text">Win</span>
+          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground mb-4">
+            Built for <span className="text-[var(--primary)]">Engineers</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            From AI-powered ideation to live hackathon tracking — every tool covered.
-          </p>
+          <p className="text-muted-foreground text-sm max-w-lg mx-auto font-medium">Everything required to go from chaotic brainstorming to a polished deployment in precisely 24 hours.</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((f, i) => (
-            <MagneticCard key={f.title} className="cursor-default">
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ delay: i * 0.08, type: 'spring', stiffness: 80 }}
-                className="premium-card p-8 group h-full"
-              >
-                <div className="flex items-start gap-4 mb-4">
-                  <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg"
-                    style={{ background: `${f.color}10`, color: f.color }}
-                  >
-                    {f.icon}
-                  </div>
-                  <div className="text-3xl mt-1 opacity-30 group-hover:opacity-60 transition-opacity">{f.emoji}</div>
-                </div>
-                <h3 className="text-lg font-bold mb-2 group-hover:text-violet transition-colors duration-300">{f.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
-
-                {/* Hover accent line */}
-                <motion.div
-                  className="mt-5 h-1 rounded-full bg-gradient-to-r from-violet to-cyan origin-left"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 + i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                />
-              </motion.div>
-            </MagneticCard>
+            <motion.div
+              key={f.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: i * 0.1, type: 'spring', stiffness: 90 }}
+              className="glass-card p-7 group cursor-default transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+            >
+              <div className="w-11 h-11 rounded-[14px] flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-105 shadow-sm"
+                style={{ background: 'var(--primary)', color: 'white' }}>
+                {f.icon}
+              </div>
+              <h3 className="text-[15px] font-bold text-foreground mb-2 group-hover:text-[var(--primary)] transition-colors">{f.title}</h3>
+              <p className="text-[13px] text-muted-foreground leading-relaxed font-medium">{f.desc}</p>
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* ═══ CTA ═══ */}
-      <section className="py-24 px-4">
+      <section className="py-24 px-4 relative overflow-hidden">
         <motion.div
-          initial={{ opacity: 0, scale: 0.92, y: 40 }}
+          initial={{ opacity: 0, scale: 0.97, y: 30 }}
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ type: 'spring', stiffness: 60 }}
-          className="max-w-4xl mx-auto relative"
+          transition={{ type: 'spring', stiffness: 80 }}
+          className="max-w-5xl mx-auto"
         >
-          <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-violet via-indigo to-cyan p-12 sm:p-16 text-center">
-            {/* Animated decorations */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.18),transparent_60%)]" />
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-morph" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full blur-3xl animate-morph" style={{ animationDelay: '-3s' }} />
-
-            {/* Grid lines */}
-            <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', backgroundSize: '50px 50px' }} />
-
+          <div className="relative overflow-hidden glass-card pearl-border p-12 sm:p-20 text-center shadow-2xl">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full blur-[100px] opacity-[0.12] pointer-events-none"
+              style={{ background: 'var(--primary)' }} />
             <div className="relative z-10">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-              >
-                <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-white mb-5 leading-tight">
-                  Ready to Make<br />It Happen?
-                </h2>
-                <p className="text-white/80 text-lg mb-10 max-w-lg mx-auto">
-                  Enroll your team, harness AI agents, and build something incredible in 24 hours.
-                </p>
-              </motion.div>
+              <h2 className="font-display text-4xl sm:text-5xl font-extrabold text-foreground mb-5 tracking-tight">
+                Initialize <span className="text-[var(--primary)]">Sequence</span>
+              </h2>
+              <p className="text-muted-foreground text-[15px] mb-10 max-w-lg mx-auto font-medium">
+                Team registration closes automatically. Secure your sandbox environment today.
+              </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/enroll">
-                  <motion.div whileHover={{ scale: 1.07, y: -3 }} whileTap={{ scale: 0.96 }}>
-                    <Button size="lg" className="bg-white text-violet px-10 py-7 text-lg rounded-2xl font-bold shadow-2xl hover:shadow-white/20 relative overflow-hidden group">
-                      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-violet/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                      <Rocket className="w-5 h-5 mr-2" />
-                      Enroll Now
-                    </Button>
-                  </motion.div>
+                  <motion.span whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}
+                    className="btn-primary inline-flex items-center justify-center min-w-[160px] h-12 px-8 textsm font-bold shadow-md cursor-pointer">
+                    Start Hacking
+                  </motion.span>
                 </Link>
                 <Link href="/login">
-                  <motion.div whileHover={{ scale: 1.07, y: -3 }} whileTap={{ scale: 0.96 }}>
-                    <Button size="lg" variant="outline" className="border-2 border-white/30 text-white px-10 py-7 text-lg rounded-2xl font-bold bg-white/10 backdrop-blur-sm hover:bg-white/20">
-                      Login <ArrowRight className="w-5 h-5 ml-2" />
-                    </Button>
-                  </motion.div>
+                  <motion.span whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}
+                    className="btn-glass inline-flex items-center justify-center min-w-[160px] h-12 px-8 text-sm font-bold shadow-sm cursor-pointer">
+                    Dashboard Login
+                  </motion.span>
                 </Link>
               </div>
             </div>
@@ -362,27 +297,21 @@ export default function LandingPage() {
       </section>
 
       {/* ═══ FOOTER ═══ */}
-      <footer className="py-12 border-t border-surface-border bg-surface-raised/30">
+      <footer className="py-10 border-t border-[var(--border)]">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet to-cyan flex items-center justify-center shadow-md">
-              <Zap className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm" style={{ background: 'var(--primary)' }}>
+              <Layers className="w-4 h-4 text-white fill-current" />
             </div>
-            <span className="font-display font-bold gradient-text-violet">Make It Happen</span>
+            <span className="font-display font-bold text-[15px] text-foreground">Make It Happen</span>
           </div>
-          <p className="text-sm text-muted-foreground">
-            © 2026 Make It Happen. Built with ❤️ and AI.
-          </p>
+          <div className="flex gap-4">
+            <span className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer">Platform Status</span>
+            <span className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer">Documentation</span>
+          </div>
+          <p className="text-[11px] font-medium text-muted-foreground tracking-wide">© 2026 ENGINE. ALL RIGHTS RESERVED.</p>
         </div>
       </footer>
-
-      {/* Marquee animation CSS */}
-      <style jsx>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
     </div>
   );
 }

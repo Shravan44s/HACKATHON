@@ -90,7 +90,7 @@ export default function HackathonControlPage() {
     }).sort((a, b) => b.totalScore - a.totalScore);
 
     return (
-        <div className="min-h-screen bg-background aurora-bg">
+        <div className="min-h-screen aurora-bg">
             <Navbar />
             <div className="max-w-7xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -100,7 +100,7 @@ export default function HackathonControlPage() {
                     <p className="text-muted-foreground mb-8">Manage the 24-hour hackathon</p>
 
                     <Tabs defaultValue="feed" className="space-y-6">
-                        <TabsList className="bg-white border border-surface-border">
+                        <TabsList className="bg-white border border-[var(--surface-border)]">
                             <TabsTrigger value="feed">Live Feed</TabsTrigger>
                             <TabsTrigger value="scoring">Evaluation</TabsTrigger>
                             <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
@@ -110,35 +110,35 @@ export default function HackathonControlPage() {
                         <TabsContent value="feed">
                             <div className="flex items-center justify-between mb-4">
                                 <h2 className="text-lg font-semibold">Team Updates</h2>
-                                <Badge className="bg-green-500/20 text-green-400">
+                                <Badge className="bg-green-500/20 text-[var(--primary)]">
                                     <RefreshCw className="w-3 h-3 mr-1" /> Live
                                 </Badge>
                             </div>
                             {hackSubs.length === 0 ? (
-                                <Card className="bg-white border-surface-border">
+                                <Card className="glass-card border-0">
                                     <CardContent className="py-12 text-center text-muted-foreground">No hackathon updates yet.</CardContent>
                                 </Card>
                             ) : (
                                 <div className="space-y-3">
                                     {hackSubs.map((sub) => (
-                                        <Card key={sub.id} className="bg-white border-surface-border">
+                                        <Card key={sub.id} className="glass-card border-0">
                                             <CardContent className="pt-4">
                                                 <div className="flex items-center justify-between mb-2">
                                                     <div className="flex items-center gap-2">
-                                                        <Badge className="bg-violet/20 text-violet">{getTeamName(sub.teamId)}</Badge>
+                                                        <Badge className="bg-[var(--accent)] text-[var(--primary)]">{getTeamName(sub.teamId)}</Badge>
                                                         {sub.content.isFinalSubmission && <Badge className="bg-red-500/20 text-red-400">Final</Badge>}
                                                     </div>
                                                     <span className="text-xs text-muted-foreground">{new Date(sub.submittedAt).toLocaleString()}</span>
                                                 </div>
                                                 <p className="text-sm mb-2">{sub.content.whatChanged}</p>
-                                                {sub.content.whatsWorking && <p className="text-xs text-green-400">✅ {sub.content.whatsWorking}</p>}
+                                                {sub.content.whatsWorking && <p className="text-xs text-[var(--primary)]">✅ {sub.content.whatsWorking}</p>}
                                                 {sub.content.whatsBroken && <p className="text-xs text-red-400">❌ {sub.content.whatsBroken}</p>}
                                                 {sub.content.demoLink && <a href={sub.content.demoLink} target="_blank" className="text-xs text-cyan hover:underline">🔗 Demo</a>}
 
                                                 {/* Judge comments on this update */}
                                                 {sub.judgeComments?.map(jc => (
                                                     <div key={jc.id} className="mt-2 p-2 rounded-lg bg-gold/5 border border-gold/20">
-                                                        <p className="text-xs"><span className="text-gold font-medium">{jc.judge}:</span> {jc.comment}</p>
+                                                        <p className="text-xs"><span className="text-[var(--primary)] font-medium">{jc.judge}:</span> {jc.comment}</p>
                                                     </div>
                                                 ))}
 
@@ -149,7 +149,7 @@ export default function HackathonControlPage() {
                                                             value={commentText}
                                                             onChange={(e) => setCommentText(e.target.value)}
                                                             placeholder="Add judge comment..."
-                                                            className="bg-surface-raised border-surface-border text-sm"
+                                                            className="bg-[var(--surface-raised)] border-[var(--surface-border)] text-sm"
                                                         />
                                                         <Button size="sm" onClick={() => postComment(sub.id)} className="bg-gold hover:bg-gold/80 text-dark">
                                                             <Send className="w-3 h-3" />
@@ -160,7 +160,7 @@ export default function HackathonControlPage() {
                                                         variant="ghost"
                                                         size="sm"
                                                         onClick={() => setCommentTeamId(sub.id)}
-                                                        className="mt-2 text-xs text-muted-foreground hover:text-gold"
+                                                        className="mt-2 text-xs text-muted-foreground hover:text-[var(--primary)]"
                                                     >
                                                         <MessageSquare className="w-3 h-3 mr-1" /> Comment
                                                     </Button>
@@ -174,7 +174,7 @@ export default function HackathonControlPage() {
 
                         {/* Scoring */}
                         <TabsContent value="scoring">
-                            <Card className="bg-white border-surface-border glow-border">
+                            <Card className="glass-card border-0 glow-border">
                                 <CardHeader>
                                     <CardTitle>Evaluation Panel</CardTitle>
                                 </CardHeader>
@@ -185,7 +185,7 @@ export default function HackathonControlPage() {
                                             <select
                                                 value={scoreTeamId}
                                                 onChange={(e) => setScoreTeamId(e.target.value)}
-                                                className="w-full p-2 rounded-lg bg-surface-raised border border-surface-border text-sm"
+                                                className="w-full p-2 rounded-lg bg-[var(--surface-raised)] border border-[var(--surface-border)] text-sm"
                                             >
                                                 <option value="">Choose a team...</option>
                                                 {teams.map(t => <option key={t.id} value={t.id}>{t.teamName}</option>)}
@@ -194,10 +194,10 @@ export default function HackathonControlPage() {
                                         <div className="space-y-2">
                                             <Label>Round</Label>
                                             <div className="flex gap-2">
-                                                <Button type="button" variant={round === 1 ? 'default' : 'outline'} onClick={() => { setRound(1); setCriteriaScores({}); }} className={round === 1 ? 'bg-violet' : 'border-surface-border'}>
+                                                <Button type="button" variant={round === 1 ? 'default' : 'outline'} onClick={() => { setRound(1); setCriteriaScores({}); }} className={round === 1 ? 'bg-violet' : 'border-[var(--surface-border)]'}>
                                                     Round 1
                                                 </Button>
-                                                <Button type="button" variant={round === 2 ? 'default' : 'outline'} onClick={() => { setRound(2); setCriteriaScores({}); }} className={round === 2 ? 'bg-violet' : 'border-surface-border'}>
+                                                <Button type="button" variant={round === 2 ? 'default' : 'outline'} onClick={() => { setRound(2); setCriteriaScores({}); }} className={round === 2 ? 'bg-violet' : 'border-[var(--surface-border)]'}>
                                                     Round 2
                                                 </Button>
                                             </div>
@@ -214,15 +214,15 @@ export default function HackathonControlPage() {
                                                     max={10}
                                                     value={criteriaScores[c.toLowerCase().replace(/\s/g, '_')] || ''}
                                                     onChange={(e) => setCriteriaScores(prev => ({ ...prev, [c.toLowerCase().replace(/\s/g, '_')]: Number(e.target.value) }))}
-                                                    className="bg-surface-raised border-surface-border font-mono"
+                                                    className="bg-[var(--surface-raised)] border-[var(--surface-border)] font-mono"
                                                 />
                                             </div>
                                         ))}
                                     </div>
 
-                                    <Textarea placeholder="Evaluator notes..." value={scoreNotes} onChange={(e) => setScoreNotes(e.target.value)} className="bg-surface-raised border-surface-border" />
+                                    <Textarea placeholder="Evaluator notes..." value={scoreNotes} onChange={(e) => setScoreNotes(e.target.value)} className="bg-[var(--surface-raised)] border-[var(--surface-border)]" />
 
-                                    <Button onClick={submitScore} className="bg-gradient-to-r from-violet to-cyan text-white">
+                                    <Button onClick={submitScore} className="bg-gradient-to-r bg-[var(--primary)] text-[var(--primary-foreground)]">
                                         Save Score
                                     </Button>
                                 </CardContent>
@@ -235,7 +235,7 @@ export default function HackathonControlPage() {
                                     <p className="text-sm text-muted-foreground">No scores recorded yet.</p>
                                 ) : (
                                     scores.map(s => (
-                                        <Card key={s.id} className="bg-white border-surface-border">
+                                        <Card key={s.id} className="glass-card border-0">
                                             <CardContent className="pt-4">
                                                 <div className="flex items-center justify-between">
                                                     <div>
@@ -243,11 +243,11 @@ export default function HackathonControlPage() {
                                                         <p className="text-xs text-muted-foreground">Round {s.round} • {s.evaluator}</p>
                                                     </div>
                                                     <div className="flex items-center gap-3">
-                                                        <span className="font-mono text-lg font-bold text-gold">{s.total}/{criteria.length * 10}</span>
+                                                        <span className="font-mono text-lg font-bold text-[var(--primary)]">{s.total}/{criteria.length * 10}</span>
                                                         <div className="flex items-center gap-2">
                                                             <span className="text-xs text-muted-foreground">{s.released ? 'Visible' : 'Hidden'}</span>
                                                             <Switch checked={s.released} onCheckedChange={() => toggleRelease(s.id)} />
-                                                            {s.released ? <Eye className="w-4 h-4 text-green-400" /> : <EyeOff className="w-4 h-4 text-muted-foreground" />}
+                                                            {s.released ? <Eye className="w-4 h-4 text-[var(--primary)]" /> : <EyeOff className="w-4 h-4 text-muted-foreground" />}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -260,9 +260,9 @@ export default function HackathonControlPage() {
 
                         {/* Leaderboard */}
                         <TabsContent value="leaderboard">
-                            <Card className="bg-white border-surface-border glow-border">
+                            <Card className="glass-card border-0 glow-border">
                                 <CardHeader>
-                                    <CardTitle className="flex items-center gap-2"><Trophy className="w-5 h-5 text-gold" /> Leaderboard (Admin View)</CardTitle>
+                                    <CardTitle className="flex items-center gap-2"><Trophy className="w-5 h-5 text-[var(--primary)]" /> Leaderboard (Admin View)</CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     {leaderboard.length === 0 ? (
@@ -270,17 +270,17 @@ export default function HackathonControlPage() {
                                     ) : (
                                         <div className="space-y-2">
                                             {leaderboard.map((entry, i) => (
-                                                <div key={entry.teamId} className={`flex items-center justify-between p-4 rounded-xl border ${i === 0 ? 'bg-gold/5 border-gold/20' : i === 1 ? 'bg-gray-400/5 border-gray-400/20' : i === 2 ? 'bg-amber-700/5 border-amber-700/20' : 'bg-surface-raised border-surface-border'}`}>
+                                                <div key={entry.teamId} className={`flex items-center justify-between p-4 rounded-xl border ${i === 0 ? 'bg-gold/5 border-gold/20' : i === 1 ? 'bg-gray-400/5 border-gray-400/20' : i === 2 ? 'bg-amber-700/5 border-amber-700/20' : 'bg-[var(--surface-raised)] border-[var(--surface-border)]'}`}>
                                                     <div className="flex items-center gap-3">
-                                                        <span className={`font-mono text-2xl font-bold ${i === 0 ? 'text-gold' : i === 1 ? 'text-gray-400' : i === 2 ? 'text-amber-600' : 'text-muted-foreground'}`}>
+                                                        <span className={`font-mono text-2xl font-bold ${i === 0 ? 'text-[var(--primary)]' : i === 1 ? 'text-muted-foreground' : i === 2 ? 'text-amber-600' : 'text-muted-foreground'}`}>
                                                             #{i + 1}
                                                         </span>
                                                         <div>
                                                             <p className="font-semibold">{entry.teamName}</p>
-                                                            <Badge variant="outline" className="text-xs border-surface-border">{entry.domain}</Badge>
+                                                            <Badge variant="outline" className="text-xs border-[var(--surface-border)]">{entry.domain}</Badge>
                                                         </div>
                                                     </div>
-                                                    <span className="font-mono text-2xl font-bold text-foreground">{entry.totalScore}</span>
+                                                    <span className="font-mono text-2xl font-bold text-white">{entry.totalScore}</span>
                                                 </div>
                                             ))}
                                         </div>

@@ -3,11 +3,11 @@ import { validateCredentials } from '@/lib/auth';
 
 export async function POST(req: NextRequest) {
     try {
-        const { email, password, role } = await req.json();
-        const user = validateCredentials(email, password, role);
+        const { email, password } = await req.json();
+        const user = validateCredentials(email, password);
 
         if (!user) {
-            return NextResponse.json({ success: false, message: 'Invalid credentials. Check email & password.' }, { status: 401 });
+            return NextResponse.json({ success: false, message: 'Invalid credentials. Check your email & password.' }, { status: 401 });
         }
 
         return NextResponse.json({ success: true, user });

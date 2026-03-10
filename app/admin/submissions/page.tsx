@@ -15,11 +15,11 @@ import type { Submission, SubmissionStatus } from '@/lib/types';
 import { FileText, MessageSquare, Check, X, Eye, AlertCircle } from 'lucide-react';
 
 const statusColors: Record<SubmissionStatus, string> = {
-    draft: 'bg-gray-500/20 text-gray-400',
+    draft: 'bg-gray-500/20 text-muted-foreground',
     submitted: 'bg-blue-500/20 text-blue-400',
     under_review: 'bg-yellow-500/20 text-yellow-400',
     feedback_received: 'bg-purple-500/20 text-purple-400',
-    approved: 'bg-green-500/20 text-green-400',
+    approved: 'bg-green-500/20 text-[var(--primary)]',
     rejected: 'bg-red-500/20 text-red-400',
 };
 
@@ -52,7 +52,7 @@ export default function SubmissionsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-background aurora-bg">
+        <div className="min-h-screen aurora-bg">
             <Navbar />
             <div className="max-w-7xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -62,7 +62,7 @@ export default function SubmissionsPage() {
                     <p className="text-muted-foreground mb-8">{ideationSubs.length} submissions</p>
 
                     {ideationSubs.length === 0 ? (
-                        <Card className="bg-white border-surface-border">
+                        <Card className="glass-card border-0">
                             <CardContent className="py-12 text-center">
                                 <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
                                 <p className="text-muted-foreground">No ideation submissions yet.</p>
@@ -78,10 +78,10 @@ export default function SubmissionsPage() {
                                     transition={{ delay: i * 0.05 }}
                                     whileHover={{ y: -3 }}
                                 >
-                                    <Card className="bg-white border-surface-border hover:border-violet/20 transition-all cursor-pointer h-full" onClick={() => setSelectedSub(sub)}>
+                                    <Card className="glass-card border-0 hover:border-violet/20 transition-all cursor-pointer h-full" onClick={() => setSelectedSub(sub)}>
                                         <CardHeader className="pb-2">
                                             <div className="flex items-center justify-between">
-                                                <Badge className="bg-violet/20 text-violet text-xs">{getTeamName(sub.teamId)}</Badge>
+                                                <Badge className="bg-[var(--accent)] text-[var(--primary)] text-xs">{getTeamName(sub.teamId)}</Badge>
                                                 <Badge className={statusColors[sub.status]}>{sub.status.replace('_', ' ')}</Badge>
                                             </div>
                                         </CardHeader>
@@ -90,10 +90,10 @@ export default function SubmissionsPage() {
                                             <p className="text-sm text-muted-foreground line-clamp-3 mb-3">{sub.content.problemStatement}</p>
                                             <div className="flex flex-wrap gap-1 mb-3">
                                                 {sub.content.techStack?.slice(0, 3).map(t => (
-                                                    <Badge key={t} variant="outline" className="text-xs border-surface-border">{t}</Badge>
+                                                    <Badge key={t} variant="outline" className="text-xs border-[var(--surface-border)]">{t}</Badge>
                                                 ))}
                                                 {(sub.content.techStack?.length || 0) > 3 && (
-                                                    <Badge variant="outline" className="text-xs border-surface-border">+{(sub.content.techStack?.length || 0) - 3}</Badge>
+                                                    <Badge variant="outline" className="text-xs border-[var(--surface-border)]">+{(sub.content.techStack?.length || 0) - 3}</Badge>
                                                 )}
                                             </div>
                                             <div className="flex items-center gap-2">
@@ -110,27 +110,27 @@ export default function SubmissionsPage() {
 
                     {/* Detail Modal */}
                     <Dialog open={!!selectedSub} onOpenChange={() => setSelectedSub(null)}>
-                        <DialogContent className="max-w-2xl bg-white border-surface-border max-h-[85vh] overflow-y-auto">
+                        <DialogContent className="max-w-2xl glass-card border-0 max-h-[85vh] overflow-y-auto">
                             <DialogHeader>
                                 <DialogTitle className="text-xl">{selectedSub?.content.projectTitle}</DialogTitle>
                             </DialogHeader>
                             {selectedSub && (
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-2">
-                                        <Badge className="bg-violet/20 text-violet">{getTeamName(selectedSub.teamId)}</Badge>
+                                        <Badge className="bg-[var(--accent)] text-[var(--primary)]">{getTeamName(selectedSub.teamId)}</Badge>
                                         <Badge className={statusColors[selectedSub.status]}>{selectedSub.status.replace('_', ' ')}</Badge>
                                     </div>
 
                                     <div className="space-y-3">
-                                        <div className="p-3 rounded-xl bg-surface-raised">
+                                        <div className="p-3 rounded-xl bg-[var(--surface-raised)]">
                                             <h4 className="text-xs font-semibold text-muted-foreground mb-1">Problem Statement</h4>
                                             <p className="text-sm whitespace-pre-wrap">{selectedSub.content.problemStatement}</p>
                                         </div>
-                                        <div className="p-3 rounded-xl bg-surface-raised">
+                                        <div className="p-3 rounded-xl bg-[var(--surface-raised)]">
                                             <h4 className="text-xs font-semibold text-muted-foreground mb-1">Proposed Solution</h4>
                                             <p className="text-sm whitespace-pre-wrap">{selectedSub.content.proposedSolution}</p>
                                         </div>
-                                        <div className="p-3 rounded-xl bg-surface-raised">
+                                        <div className="p-3 rounded-xl bg-[var(--surface-raised)]">
                                             <h4 className="text-xs font-semibold text-muted-foreground mb-1">Target Audience</h4>
                                             <p className="text-sm">{selectedSub.content.targetAudience}</p>
                                         </div>
@@ -153,7 +153,7 @@ export default function SubmissionsPage() {
                                                 <h4 className="text-xs font-semibold text-muted-foreground mb-2">Attachments ({selectedSub.files.length})</h4>
                                                 <div className="grid grid-cols-3 gap-2">
                                                     {selectedSub.files.map(f => (
-                                                        <div key={f.id} className="p-2 rounded-lg bg-surface-raised border border-surface-border text-center">
+                                                        <div key={f.id} className="p-2 rounded-lg bg-[var(--surface-raised)] border border-[var(--surface-border)] text-center">
                                                             {f.type.startsWith('image/') ? (
                                                                 <img src={f.url} alt={f.name} className="w-full h-20 object-cover rounded mb-1" />
                                                             ) : (
@@ -168,15 +168,15 @@ export default function SubmissionsPage() {
                                     </div>
 
                                     {/* Feedback & Actions */}
-                                    <div className="border-t border-surface-border pt-4">
+                                    <div className="border-t border-[var(--surface-border)] pt-4">
                                         <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
-                                            <MessageSquare className="w-4 h-4 text-gold" /> Feedback
+                                            <MessageSquare className="w-4 h-4 text-[var(--primary)]" /> Feedback
                                         </h4>
                                         <Textarea
                                             placeholder="Add feedback for the team..."
                                             value={feedback}
                                             onChange={(e) => setFeedback(e.target.value)}
-                                            className="bg-surface-raised border-surface-border mb-3"
+                                            className="bg-[var(--surface-raised)] border-[var(--surface-border)] mb-3"
                                         />
                                         <div className="flex gap-2">
                                             <Button onClick={() => updateStatus(selectedSub.id, 'approved', feedback)} className="bg-green-600 hover:bg-green-700 text-white">

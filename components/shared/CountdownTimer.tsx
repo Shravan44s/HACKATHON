@@ -50,9 +50,9 @@ export default function CountdownTimer({ targetDate, label = 'Hackathon Starts I
     const isLarge = size === 'lg';
 
     return (
-        <div className="text-center">
+        <div className="text-center mt-6">
             {label && (
-                <p className={`text-muted-foreground mb-4 ${isLarge ? 'text-lg' : 'text-sm'}`}>
+                <p className={`text-muted-foreground mb-4 font-medium uppercase tracking-[0.2em] ${isLarge ? 'text-xs' : 'text-[10px]'}`}>
                     {label}
                 </p>
             )}
@@ -66,9 +66,9 @@ export default function CountdownTimer({ targetDate, label = 'Hackathon Starts I
                         className="flex flex-col items-center"
                     >
                         <div
-                            className={`glass glow-border rounded-xl flex items-center justify-center font-mono font-bold ${isLarge
-                                    ? 'w-20 h-20 sm:w-24 sm:h-24 text-3xl sm:text-4xl'
-                                    : 'w-14 h-14 text-xl'
+                            className={`glass-card glow-border rounded-2xl flex items-center justify-center font-mono font-bold ${isLarge
+                                ? 'w-20 h-20 sm:w-24 sm:h-24 text-3xl sm:text-4xl'
+                                : 'w-14 h-14 text-xl'
                                 }`}
                         >
                             <motion.span
@@ -80,7 +80,7 @@ export default function CountdownTimer({ targetDate, label = 'Hackathon Starts I
                                 {String(unit.value).padStart(2, '0')}
                             </motion.span>
                         </div>
-                        <span className={`mt-2 text-muted-foreground font-medium ${isLarge ? 'text-xs sm:text-sm' : 'text-xs'}`}>
+                        <span className={`mt-3 text-muted-foreground font-semibold uppercase tracking-[0.15em] ${isLarge ? 'text-[10px]' : 'text-[9px]'}`}>
                             {unit.label}
                         </span>
                     </motion.div>

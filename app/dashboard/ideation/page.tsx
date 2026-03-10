@@ -14,7 +14,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Navbar from '@/components/shared/Navbar';
-import ChatWidget from '@/components/shared/ChatWidget';
 import FileUpload from '@/components/shared/FileUpload';
 import { HACKATHON_CONFIG } from '@/lib/auth';
 import { toast } from 'sonner';
@@ -102,22 +101,21 @@ export default function IdeationPage() {
     if (!mounted || !user) return null;
 
     return (
-        <div className="min-h-screen bg-background aurora-bg">
+        <div className="min-h-screen aurora-bg">
             <Navbar />
-            <ChatWidget />
 
             <div className="max-w-3xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                     <div className="text-center mb-10">
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
-                            <Lightbulb className="w-4 h-4 text-gold" />
+                            <Lightbulb className="w-4 h-4 text-[var(--primary)]" />
                             <span className="text-sm text-muted-foreground">Phase 1 — Ideation</span>
                         </div>
                         <h1 className="font-display text-3xl font-bold mb-2">
                             Submit Your <span className="gradient-text">Idea</span>
                         </h1>
                         {existingSubmission && (
-                            <Badge className="bg-violet/20 text-violet">{existingSubmission.status}</Badge>
+                            <Badge className="bg-[var(--accent)] text-[var(--primary)]">{existingSubmission.status}</Badge>
                         )}
                     </div>
 
@@ -125,46 +123,46 @@ export default function IdeationPage() {
                     {existingSubmission?.adminComment && (
                         <Card className="mb-6 bg-gold/5 border-gold/20">
                             <CardContent className="pt-4">
-                                <p className="text-sm font-medium text-gold mb-1">Admin Feedback:</p>
+                                <p className="text-sm font-medium text-[var(--primary)] mb-1">Admin Feedback:</p>
                                 <p className="text-sm text-muted-foreground">{existingSubmission.adminComment}</p>
                             </CardContent>
                         </Card>
                     )}
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                        <Card className="bg-white border-surface-border glow-border">
+                        <Card className="glass-card border-0 glow-border">
                             <CardHeader><CardTitle>Project Details</CardTitle></CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="space-y-2">
                                     <Label>Project Title</Label>
-                                    <Input placeholder="My Awesome Project" className="bg-surface-raised border-surface-border" {...register('projectTitle')} />
+                                    <Input placeholder="My Awesome Project" className="bg-[var(--surface-raised)] border-[var(--surface-border)]" {...register('projectTitle')} />
                                     {errors.projectTitle && <p className="text-xs text-red-400">{errors.projectTitle.message}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Problem Statement</Label>
-                                    <Textarea placeholder="What problem does your project solve?" className="bg-surface-raised border-surface-border min-h-[100px]" {...register('problemStatement')} />
+                                    <Textarea placeholder="What problem does your project solve?" className="bg-[var(--surface-raised)] border-[var(--surface-border)] min-h-[100px]" {...register('problemStatement')} />
                                     {errors.problemStatement && <p className="text-xs text-red-400">{errors.problemStatement.message}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Proposed Solution</Label>
-                                    <Textarea placeholder="How will you solve this problem?" className="bg-surface-raised border-surface-border min-h-[100px]" {...register('proposedSolution')} />
+                                    <Textarea placeholder="How will you solve this problem?" className="bg-[var(--surface-raised)] border-[var(--surface-border)] min-h-[100px]" {...register('proposedSolution')} />
                                     {errors.proposedSolution && <p className="text-xs text-red-400">{errors.proposedSolution.message}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Target Audience</Label>
-                                    <Input placeholder="Who will benefit from this?" className="bg-surface-raised border-surface-border" {...register('targetAudience')} />
+                                    <Input placeholder="Who will benefit from this?" className="bg-[var(--surface-raised)] border-[var(--surface-border)]" {...register('targetAudience')} />
                                     {errors.targetAudience && <p className="text-xs text-red-400">{errors.targetAudience.message}</p>}
                                 </div>
                             </CardContent>
                         </Card>
 
                         {/* Tech Stack */}
-                        <Card className="bg-white border-surface-border">
+                        <Card className="glass-card border-0">
                             <CardHeader><CardTitle>Tech Stack</CardTitle></CardHeader>
                             <CardContent className="space-y-3">
                                 <div className="flex flex-wrap gap-2 mb-2">
                                     {selectedTech.map(t => (
-                                        <Badge key={t} className="bg-violet/20 text-violet cursor-pointer" onClick={() => removeTech(t)}>
+                                        <Badge key={t} className="bg-[var(--accent)] text-[var(--primary)] cursor-pointer" onClick={() => removeTech(t)}>
                                             {t} <X className="w-3 h-3 ml-1" />
                                         </Badge>
                                     ))}
@@ -175,9 +173,9 @@ export default function IdeationPage() {
                                         onChange={(e) => setTechInput(e.target.value)}
                                         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addTech(techInput); } }}
                                         placeholder="Type or select..."
-                                        className="bg-surface-raised border-surface-border"
+                                        className="bg-[var(--surface-raised)] border-[var(--surface-border)]"
                                     />
-                                    <Button type="button" variant="outline" onClick={() => addTech(techInput)} className="border-surface-border">
+                                    <Button type="button" variant="outline" onClick={() => addTech(techInput)} className="border-[var(--surface-border)]">
                                         <Plus className="w-4 h-4" />
                                     </Button>
                                 </div>
@@ -186,7 +184,7 @@ export default function IdeationPage() {
                                         <Badge
                                             key={t}
                                             variant="outline"
-                                            className={`cursor-pointer text-xs ${selectedTech.includes(t) ? 'bg-violet/20 border-violet text-violet' : 'border-surface-border hover:border-violet/50'}`}
+                                            className={`cursor-pointer text-xs ${selectedTech.includes(t) ? 'bg-violet/20 border-violet text-violet' : 'border-[var(--surface-border)] hover:border-violet/50'}`}
                                             onClick={() => selectedTech.includes(t) ? removeTech(t) : addTech(t)}
                                         >
                                             {t}
@@ -198,18 +196,18 @@ export default function IdeationPage() {
                         </Card>
 
                         {/* File Upload */}
-                        <Card className="bg-white border-surface-border">
+                        <Card className="glass-card border-0">
                             <CardHeader><CardTitle>Attachments</CardTitle></CardHeader>
                             <CardContent className="space-y-4">
                                 <FileUpload files={files} onChange={setFiles} />
                                 <div className="space-y-2">
                                     <Label>Video Pitch URL (optional)</Label>
-                                    <Input placeholder="https://youtube.com/watch?v=..." className="bg-surface-raised border-surface-border" {...register('videoPitchUrl')} />
+                                    <Input placeholder="https://youtube.com/watch?v=..." className="bg-[var(--surface-raised)] border-[var(--surface-border)]" {...register('videoPitchUrl')} />
                                 </div>
                             </CardContent>
                         </Card>
 
-                        <Button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-violet to-cyan text-white py-6 text-lg font-semibold rounded-xl">
+                        <Button type="submit" disabled={loading} className="w-full bg-gradient-to-r bg-[var(--primary)] text-[var(--primary-foreground)] py-6 text-lg font-semibold rounded-xl">
                             {loading ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : <Send className="w-5 h-5 mr-2" />}
                             {existingSubmission ? 'Update Submission' : 'Submit for Review'}
                         </Button>

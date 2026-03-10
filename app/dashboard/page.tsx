@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAuthStore, useAuthHydrated, useTeamStore, usePhaseStore, useAnnouncementStore, useScoreStore, useSubmissionStore } from '@/lib/store';
 import Navbar from '@/components/shared/Navbar';
-import ChatWidget from '@/components/shared/ChatWidget';
 import PhaseStepper from '@/components/shared/PhaseStepper';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -58,9 +57,8 @@ export default function ParticipantDashboard() {
     const currentPhaseLink = phaseLinks[currentPhase];
 
     return (
-        <div className="min-h-screen bg-background aurora-bg">
+        <div className="min-h-screen aurora-bg">
             <Navbar />
-            <ChatWidget />
 
             <div className="max-w-6xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -124,7 +122,7 @@ export default function ParticipantDashboard() {
                                         <div className="flex-shrink-0">
                                             <Link href="/enroll">
                                                 <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.97 }}>
-                                                    <Button size="lg" className="bg-gradient-to-r from-violet to-indigo text-white px-8 py-6 text-base rounded-2xl shadow-xl shadow-violet/25 font-semibold">
+                                                    <Button size="lg" className="bg-gradient-to-r bg-[var(--primary)] text-[var(--primary-foreground)] px-8 py-6 text-base rounded-2xl shadow-xl shadow-violet/25 font-semibold">
                                                         <Rocket className="w-5 h-5 mr-2" />
                                                         Enroll Now
                                                         <ArrowRight className="w-4 h-4 ml-2" />
@@ -147,7 +145,7 @@ export default function ParticipantDashboard() {
                         {/* Main Content */}
                         <div className="lg:col-span-2 space-y-6">
                             {/* Current Phase Card */}
-                            <Card className="bg-white border-surface-border glow-border">
+                            <Card className="glass-card border-0 glow-border">
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
                                         <Clock className="w-5 h-5 text-violet" />
@@ -175,7 +173,7 @@ export default function ParticipantDashboard() {
                             </Card>
 
                             {/* Submissions Summary */}
-                            <Card className="bg-white border-surface-border">
+                            <Card className="glass-card border-0">
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2 text-lg">
                                         <FileText className="w-5 h-5 text-cyan" /> Your Submissions
@@ -187,12 +185,12 @@ export default function ParticipantDashboard() {
                                     ) : (
                                         <div className="space-y-3">
                                             {teamSubmissions.map(sub => (
-                                                <div key={sub.id} className="flex items-center justify-between p-3 rounded-xl bg-surface-raised border border-surface-border">
+                                                <div key={sub.id} className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface-raised)] border border-[var(--surface-border)]">
                                                     <div>
                                                         <p className="text-sm font-medium capitalize">{sub.phase} Phase</p>
                                                         <p className="text-xs text-muted-foreground">{new Date(sub.submittedAt).toLocaleDateString()}</p>
                                                     </div>
-                                                    <Badge variant={sub.status === 'approved' ? 'default' : 'secondary'} className={sub.status === 'approved' ? 'bg-green-500/20 text-green-400' : ''}>
+                                                    <Badge variant={sub.status === 'approved' ? 'default' : 'secondary'} className={sub.status === 'approved' ? 'bg-green-500/20 text-[var(--primary)]' : ''}>
                                                         {sub.status}
                                                     </Badge>
                                                 </div>
@@ -204,23 +202,23 @@ export default function ParticipantDashboard() {
 
                             {/* Scores (released only) */}
                             {teamScores.length > 0 && (
-                                <Card className="bg-white border-surface-border glow-border-cyan">
+                                <Card className="glass-card border-0 glow-border-cyan">
                                     <CardHeader>
                                         <CardTitle className="flex items-center gap-2 text-lg">
-                                            <Star className="w-5 h-5 text-gold" /> Your Scores
+                                            <Star className="w-5 h-5 text-[var(--primary)]" /> Your Scores
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent>
                                         <div className="space-y-3">
                                             {teamScores.map(score => (
-                                                <div key={score.id} className="p-4 rounded-xl bg-surface-raised border border-surface-border">
+                                                <div key={score.id} className="p-4 rounded-xl bg-[var(--surface-raised)] border border-[var(--surface-border)]">
                                                     <div className="flex items-center justify-between mb-2">
                                                         <span className="text-sm font-medium capitalize">Round {score.round} — {score.phase}</span>
-                                                        <span className="font-mono text-lg font-bold text-gold">{score.total}/60</span>
+                                                        <span className="font-mono text-lg font-bold text-[var(--primary)]">{score.total}/60</span>
                                                     </div>
                                                     <div className="grid grid-cols-3 gap-2">
                                                         {Object.entries(score.criteria).map(([key, val]) => (
-                                                            <div key={key} className="text-center p-2 rounded-lg bg-background">
+                                                            <div key={key} className="text-center p-2 rounded-lg bg-[var(--surface)]">
                                                                 <p className="text-xs text-muted-foreground capitalize">{key}</p>
                                                                 <p className="font-mono text-sm font-bold">{val}/10</p>
                                                             </div>
@@ -238,7 +236,7 @@ export default function ParticipantDashboard() {
                         <div className="space-y-6">
                             {/* Team Info */}
                             {team && (
-                                <Card className="bg-white border-surface-border">
+                                <Card className="glass-card border-0">
                                     <CardHeader>
                                         <CardTitle className="flex items-center gap-2 text-lg">
                                             <Users className="w-5 h-5 text-cyan" /> Team
@@ -247,17 +245,17 @@ export default function ParticipantDashboard() {
                                     <CardContent className="space-y-3">
                                         <div>
                                             <p className="text-sm font-semibold">{team.teamName}</p>
-                                            <Badge className="mt-1 bg-violet/20 text-violet">{team.domain}</Badge>
+                                            <Badge className="mt-1 bg-[var(--accent)] text-[var(--primary)]">{team.domain}</Badge>
                                         </div>
                                         <div className="space-y-2">
                                             <div className="flex items-center gap-2 text-sm">
-                                                <div className="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center text-xs text-gold">👑</div>
+                                                <div className="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center text-xs text-[var(--primary)]">👑</div>
                                                 <span>{team.leader.name}</span>
-                                                <Badge variant="outline" className="text-xs border-gold/30 text-gold">Leader</Badge>
+                                                <Badge variant="outline" className="text-xs border-gold/30 text-[var(--primary)]">Leader</Badge>
                                             </div>
                                             {team.members.map(m => (
                                                 <div key={m.id} className="flex items-center gap-2 text-sm">
-                                                    <div className="w-6 h-6 rounded-full bg-surface-raised flex items-center justify-center text-xs">👤</div>
+                                                    <div className="w-6 h-6 rounded-full bg-[var(--surface-raised)] flex items-center justify-center text-xs">👤</div>
                                                     <span>{m.name}</span>
                                                     <span className="text-xs text-muted-foreground">({m.role})</span>
                                                 </div>
@@ -268,7 +266,7 @@ export default function ParticipantDashboard() {
                             )}
 
                             {/* AI Agents Quick Access */}
-                            <Card className="bg-white border-surface-border">
+                            <Card className="glass-card border-0">
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2 text-lg">
                                         <Bot className="w-5 h-5 text-violet" /> AI Agents
@@ -285,10 +283,10 @@ export default function ParticipantDashboard() {
                             </Card>
 
                             {/* Announcements */}
-                            <Card className="bg-white border-surface-border">
+                            <Card className="glass-card border-0">
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2 text-lg">
-                                        <Bell className="w-5 h-5 text-gold" /> Announcements
+                                        <Bell className="w-5 h-5 text-[var(--primary)]" /> Announcements
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent>
@@ -297,8 +295,8 @@ export default function ParticipantDashboard() {
                                     ) : (
                                         <div className="space-y-3 max-h-64 overflow-y-auto">
                                             {teamAnnouncements.slice(0, 5).map(a => (
-                                                <div key={a.id} className="p-3 rounded-xl bg-surface-raised border border-surface-border">
-                                                    {a.pinned && <Badge className="bg-gold/20 text-gold text-xs mb-1">📌 Pinned</Badge>}
+                                                <div key={a.id} className="p-3 rounded-xl bg-[var(--surface-raised)] border border-[var(--surface-border)]">
+                                                    {a.pinned && <Badge className="bg-amber-400/20 text-[var(--primary)] text-xs mb-1">📌 Pinned</Badge>}
                                                     <p className="text-sm font-medium">{a.title}</p>
                                                     <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{a.body}</p>
                                                     <p className="text-xs text-muted-foreground mt-1">{new Date(a.createdAt).toLocaleDateString()}</p>
