@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ideationSchema, type IdeationFormData } from '@/lib/validators';
-import { useAuthStore, useAuthHydrated, useTeamStore, useSubmissionStore } from '@/lib/store';
+import { useAuthStore, useAuthHydrated, useTeamStore, useSubmissionStore, usePhaseStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,7 +18,7 @@ import FileUpload from '@/components/shared/FileUpload';
 import { HACKATHON_CONFIG } from '@/lib/auth';
 import { toast } from 'sonner';
 import type { FileAttachment } from '@/lib/types';
-import { Lightbulb, Send, Loader2, X, Plus } from 'lucide-react';
+import { Lightbulb, Send, Loader2, X, Plus, Lock } from 'lucide-react';
 
 export default function IdeationPage() {
     const [mounted, setMounted] = useState(false);
@@ -31,6 +31,7 @@ export default function IdeationPage() {
     const hydrated = useAuthHydrated();
     const { teams } = useTeamStore();
     const { submissions, addSubmission, updateSubmission } = useSubmissionStore();
+    const { phases } = usePhaseStore();
 
     useEffect(() => {
         setMounted(true);
@@ -99,6 +100,28 @@ export default function IdeationPage() {
     };
 
     if (!mounted || !user) return null;
+
+    const isPhaseActive = phases.find(p => p.id === 'ideation')?.active ?? false;
+
+    if (!isPhaseActive) {
+        return (
+            <div className="min-h-screen aurora-bg">
+                <Navbar />
+                <div className="max-w-xl mx-auto px-4 pt-32 pb-16 text-center">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                        <div className="w-16 h-16 mx-auto rounded-2xl bg-red-500/10 flex items-center justify-center mb-6">
+                            <Lock className="w-8 h-8 text-red-400" />
+                        </div>
+                        <h1 className="text-3xl font-display font-bold mb-3">Phase Locked</h1>
+                        <p className="text-muted-foreground mb-6">The <strong>Ideation</strong> phase has not been activated by the admin yet. Please check back later.</p>
+                        <Button onClick={() => router.push('/dashboard')} className="bg-[var(--primary)] text-[var(--primary-foreground)]">
+                            Back to Dashboard
+                        </Button>
+                    </motion.div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen aurora-bg">

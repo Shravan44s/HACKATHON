@@ -2,7 +2,7 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { User, Team, Submission, Score, Announcement, Phase, PhaseConfig, AgentSession, AgentMessage, AgentType } from './types';
+import type { User, Team, Submission, Score, Announcement, Phase, PhaseConfig, AgentSession, AgentMessage, AgentType, ChecklistItem } from './types';
 
 // ==================== AUTH STORE ====================
 interface AuthState {
@@ -237,5 +237,69 @@ export const useAgentStore = create<AgentState>()(
                 get().sessions.filter((s) => s.teamId === teamId),
         }),
         { name: 'mih-agents' }
+    )
+);
+
+// ==================== CHECKLIST STORE ====================
+interface ChecklistState {
+    checklistItems: ChecklistItem[];
+    addChecklistItem: (item: ChecklistItem) => void;
+    updateChecklistItem: (id: string, updates: Partial<ChecklistItem>) => void;
+    removeChecklistItem: (id: string) => void;
+}
+
+export const useChecklistStore = create<ChecklistState>()(
+    persist(
+        (set) => ({
+            checklistItems: [
+                { id: 'tshirt_submitted', label: 'T-Shirt Sizes Submitted', createdAt: new Date().toISOString() },
+                { id: 'welcome_email', label: 'Welcome Email Sent', createdAt: new Date().toISOString() },
+                { id: 'repo_access', label: 'GitHub Repo Access Granted', createdAt: new Date().toISOString() },
+            ],
+            addChecklistItem: (item) =>
+                set((state) => ({ checklistItems: [...state.checklistItems, item] })),
+            updateChecklistItem: (id, updates) =>
+                set((state) => ({
+                    checklistItems: state.checklistItems.map((i) =>
+                        i.id === id ? { ...i, ...updates } : i
+                    ),
+                })),
+            removeChecklistItem: (id) =>
+                set((state) => ({ checklistItems: state.checklistItems.filter((i) => i.id !== id) })),
+        }),
+        { name: 'mih-checklists' }
+    )
+);
+
+// ==================== WINNERS STORE ====================
+export interface WinnerEntry {
+    id: string;
+    teamName: string;
+    projectTitle: string;
+    position: number; // 1 = 1st, 2 = 2nd, 3 = 3rd, etc.
+}
+
+interface WinnersState {
+    winners: WinnerEntry[];
+    isVisible: boolean;
+    setWinners: (winners: WinnerEntry[]) => void;
+    addWinner: (winner: WinnerEntry) => void;
+    removeWinner: (id: string) => void;
+    toggleVisibility: (visible: boolean) => void;
+}
+
+export const useWinnersStore = create<WinnersState>()(
+    persist(
+        (set) => ({
+            winners: [],
+            isVisible: false,
+            setWinners: (winners) => set({ winners }),
+            addWinner: (winner) =>
+                set((state) => ({ winners: [...state.winners, winner] })),
+            removeWinner: (id) =>
+                set((state) => ({ winners: state.winners.filter((w) => w.id !== id) })),
+            toggleVisibility: (visible) => set({ isVisible: visible }),
+        }),
+        { name: 'mih-winners' }
     )
 );

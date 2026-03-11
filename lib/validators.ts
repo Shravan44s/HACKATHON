@@ -5,6 +5,7 @@ export const teamMemberSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters'),
     email: z.string().email('Invalid email address'),
     role: z.string().min(1, 'Role is required'),
+    employeeId: z.string().min(3, 'Employee ID is required'),
 });
 
 export const enrollmentSchema = z.object({
@@ -13,8 +14,8 @@ export const enrollmentSchema = z.object({
         name: z.string().min(2, 'Name is required'),
         email: z.string().email('Invalid email'),
         phone: z.string().min(10, 'Valid phone number required'),
-        college: z.string().min(2, 'College name is required'),
-        department: z.string().min(2, 'Department is required'),
+        employeeId: z.string().min(3, 'Employee ID is required'),
+        organization: z.string().min(2, 'Organization is required'),
     }),
     members: z.array(teamMemberSchema).min(1, 'At least 1 team member is required'),
     domain: z.string().min(1, 'Project domain is required'),
@@ -62,7 +63,7 @@ export const announcementSchema = z.object({
 export const loginSchema = z.object({
     email: z.string().email('Invalid email address'),
     password: z.string().min(4, 'Password must be at least 4 characters'),
-    role: z.enum(['admin', 'participant']),
+    role: z.enum(['admin', 'participant', 'mentor']),
 });
 
 export type EnrollmentFormData = z.infer<typeof enrollmentSchema>;

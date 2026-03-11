@@ -1,6 +1,6 @@
 'use client';
 
-import { Check, UserPlus, Lightbulb, Code, Zap, Trophy } from 'lucide-react';
+import { Check, UserPlus, Lightbulb, Code, Zap, Trophy, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Phase } from '@/lib/types';
 
@@ -33,9 +33,10 @@ const phases: Phase[] = ['enrollment', 'ideation', 'development', 'hackathon', '
 interface PhaseStepperProps {
     currentPhase: Phase;
     completedPhases?: Phase[];
+    lockedPhases?: Phase[];
 }
 
-export default function PhaseStepper({ currentPhase, completedPhases = [] }: PhaseStepperProps) {
+export default function PhaseStepper({ currentPhase, completedPhases = [], lockedPhases = [] }: PhaseStepperProps) {
     const currentIndex = phases.indexOf(currentPhase);
 
     return (
@@ -57,6 +58,7 @@ export default function PhaseStepper({ currentPhase, completedPhases = [] }: Pha
                     const isCompleted = completedPhases.includes(phase);
                     const isCurrent = phase === currentPhase;
                     const isPast = index < currentIndex;
+                    const isLocked = lockedPhases.includes(phase);
                     const color = phaseColors[phase];
 
                     return (
@@ -69,20 +71,24 @@ export default function PhaseStepper({ currentPhase, completedPhases = [] }: Pha
                         >
                             <motion.div
                                 className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${isCompleted || isPast
+                                    ? 'border-transparent'
+                                    : isCurrent
                                         ? 'border-transparent'
-                                        : isCurrent
-                                            ? 'border-transparent'
-                                            : 'border-surface-border bg-surface-raised'
+                                        : 'border-surface-border bg-surface-raised'
                                     }`}
                                 style={{
-                                    background: isCompleted || isPast || isCurrent
-                                        ? color
-                                        : undefined,
+                                    background: isLocked
+                                        ? '#374151'
+                                        : isCompleted || isPast || isCurrent
+                                            ? color
+                                            : undefined,
                                     boxShadow: isCurrent ? `0 0 20px ${color}40` : undefined,
                                 }}
                                 whileHover={{ scale: 1.1 }}
                             >
-                                {isCompleted ? (
+                                {isLocked ? (
+                                    <Lock className="w-4 h-4 text-red-400" />
+                                ) : isCompleted ? (
                                     <Check className="w-4 h-4 text-white" />
                                 ) : (
                                     <span className={isCompleted || isPast || isCurrent ? 'text-white' : 'text-muted-foreground'}>
@@ -91,10 +97,10 @@ export default function PhaseStepper({ currentPhase, completedPhases = [] }: Pha
                                 )}
                             </motion.div>
                             <span
-                                className={`mt-2 text-xs font-medium ${isCurrent ? 'text-foreground' : 'text-muted-foreground'
+                                className={`mt-2 text-xs font-medium ${isLocked ? 'text-red-400/80' : isCurrent ? 'text-foreground' : 'text-muted-foreground'
                                     }`}
                             >
-                                {phaseLabels[phase]}
+                                {isLocked ? 'Locked' : phaseLabels[phase]}
                             </span>
                         </motion.div>
                     );

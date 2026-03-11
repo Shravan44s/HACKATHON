@@ -29,12 +29,12 @@ export default function EnrollPage() {
         resolver: zodResolver(enrollmentSchema),
         defaultValues: {
             teamName: '',
-            leader: { name: '', email: '', phone: '', college: '', department: '' },
-            members: [{ id: crypto.randomUUID(), name: '', email: '', role: '' }],
+            leader: { name: '', email: '', phone: '', employeeId: '', organization: '' },
+            members: [{ id: crypto.randomUUID(), name: '', email: '', role: '', employeeId: '' }],
             domain: '',
             problemStatement: '',
             agreement: false,
-        },
+        } as EnrollmentFormData,
     });
 
     const { fields, append, remove } = useFieldArray({ control, name: 'members' });
@@ -162,15 +162,16 @@ export default function EnrollPage() {
                                     {errors.leader?.phone && <p className="text-xs text-red-500">{errors.leader.phone.message}</p>}
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>College</Label>
-                                    <Input placeholder="MIT" className="bg-[var(--surface-raised)] border-[var(--surface-border)] rounded-xl h-11" {...register('leader.college')} />
-                                    {errors.leader?.college && <p className="text-xs text-red-500">{errors.leader.college.message}</p>}
+                                    <Label>Employee ID</Label>
+                                    <Input placeholder="EMP-1234" className="bg-[var(--surface-raised)] border-[var(--surface-border)] rounded-xl h-11" {...register('leader.employeeId')} />
+                                    {errors.leader?.employeeId && <p className="text-xs text-red-500">{errors.leader.employeeId.message}</p>}
                                 </div>
-                                <div className="space-y-2 sm:col-span-2">
-                                    <Label>Department</Label>
-                                    <Input placeholder="Computer Science" className="bg-[var(--surface-raised)] border-[var(--surface-border)] rounded-xl h-11" {...register('leader.department')} />
-                                    {errors.leader?.department && <p className="text-xs text-red-500">{errors.leader.department.message}</p>}
+                                <div className="space-y-2">
+                                    <Label>Organization / Unit</Label>
+                                    <Input placeholder="Global Defense Network" className="bg-[var(--surface-raised)] border-[var(--surface-border)] rounded-xl h-11" {...register('leader.organization')} />
+                                    {errors.leader?.organization && <p className="text-xs text-red-500">{errors.leader.organization.message}</p>}
                                 </div>
+
                             </div>
                         </motion.div>
 
@@ -209,7 +210,11 @@ export default function EnrollPage() {
                                         <Label className="text-xs">Role</Label>
                                         <Input placeholder="Developer" className="glass-card border-0 text-sm rounded-xl" {...register(`members.${index}.role`)} />
                                     </div>
-                                    <div className="flex items-end">
+                                    <div className="space-y-1">
+                                        <Label className="text-xs">Employee ID</Label>
+                                        <Input placeholder="EMP-456" className="glass-card border-0 text-sm rounded-xl" {...register(`members.${index}.employeeId`)} />
+                                    </div>
+                                    <div className="flex items-end justify-end">
                                         {fields.length > 1 && (
                                             <Button type="button" variant="ghost" size="sm" onClick={() => remove(index)} className="text-red-400 hover:text-red-500 hover:bg-red-50">
                                                 <Trash2 className="w-4 h-4" />
@@ -224,7 +229,7 @@ export default function EnrollPage() {
                                     <Button
                                         type="button"
                                         variant="outline"
-                                        onClick={() => append({ id: crypto.randomUUID(), name: '', email: '', role: '' })}
+                                        onClick={() => append({ id: crypto.randomUUID(), name: '', email: '', role: '', employeeId: '' } as any)}
                                         className="w-full border-dashed border-[var(--surface-border)] hover:border-violet/30 hover:bg-violet/5 rounded-xl"
                                     >
                                         <Plus className="w-4 h-4 mr-2" /> Add Member

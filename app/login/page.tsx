@@ -18,6 +18,7 @@ import Link from 'next/link';
 const loginSchema = z.object({
     email: z.string().email('Enter a valid email'),
     password: z.string().min(4, 'Password must be at least 4 characters'),
+    role: z.enum(['admin', 'participant', 'mentor']),
 });
 type LoginForm = z.infer<typeof loginSchema>;
 
@@ -26,8 +27,9 @@ export default function LoginPage() {
     const router = useRouter();
     const { login } = useAuthStore();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<LoginForm>({
         resolver: zodResolver(loginSchema),
+        defaultValues: { role: 'participant' }
     });
 
     const onSubmit = async (data: LoginForm) => {
@@ -83,8 +85,8 @@ export default function LoginPage() {
                     </div>
 
                     <div className="text-center mb-7">
-                        <h1 className="text-2xl font-bold text-foreground mb-1">Welcome Back</h1>
-                        <p className="text-sm text-muted-foreground">Sign in to continue your hackathon journey</p>
+                        <h1 className="text-2xl font-bold text-foreground mb-1">System Auth</h1>
+                        <p className="text-sm text-muted-foreground">Verify your security clearance</p>
                     </div>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -133,17 +135,14 @@ export default function LoginPage() {
 
                     {/* Credentials hint */}
                     <div className="mt-7 p-4 rounded-2xl bg-[var(--surface-raised)] border border-[var(--surface-border)]">
-                        <p className="text-xs text-muted-foreground text-center mb-2 font-medium uppercase tracking-wider">Demo Credentials</p>
+                        <p className="text-xs text-muted-foreground text-center mb-2 font-medium uppercase tracking-wider">Demo Override Codes</p>
                         <div className="text-xs text-center font-mono space-y-1 text-foreground/60">
-                            <p><span className="text-[var(--primary)] font-semibold">Admin:</span> admin@makeitappen.com / admin123</p>
-                            <p><span className="font-semibold">Participant:</span> any email / any pass (4+ chars)</p>
+                            <p><span className="text-[var(--primary)] font-semibold">Admin:</span> admin@makeithappen.com</p>
+                            <p><span className="text-emerald-500 font-semibold">Mentor:</span> mentor@makeithappen.com</p>
+                            <p><span className="font-semibold">Participant:</span> any email</p>
+                            <p className="mt-2 text-[10px] opacity-70">Pass: admin123 / default (4+ chars)</p>
                         </div>
                     </div>
-
-                    {/* Role hint */}
-                    <p className="text-xs text-center text-muted-foreground mt-4 opacity-60">
-                        Role is detected automatically from your email.
-                    </p>
 
                     <p className="text-sm text-center text-muted-foreground mt-5">
                         New team?{' '}

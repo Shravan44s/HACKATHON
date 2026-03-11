@@ -2,15 +2,18 @@ import type { AgentInfo } from './types';
 
 // Demo credentials
 export const DEMO_USERS = {
-    admin: { email: 'admin@makeitappen.com', password: 'admin123', name: 'Admin User', role: 'admin' as const },
-    participant: { email: 'participant@test.com', password: 'test123', name: 'Test Participant', role: 'participant' as const },
+    admin: { email: 'admin@makeithappen.com', password: 'admin123', name: 'System Overlord', role: 'admin' as const },
+    mentor: { email: 'mentor@makeithappen.com', password: 'admin123', name: 'Expert Advisor', role: 'mentor' as const },
+    participant: { email: 'participant@test.com', password: 'test123', name: 'Operative', role: 'participant' as const },
 };
 
-// Known admin emails
-export const ADMIN_EMAILS = ['admin@makeitappen.com'];
+// Known special emails
+export const ADMIN_EMAILS = ['admin@makeithappen.com'];
+export const MENTOR_EMAILS = ['mentor@makeithappen.com'];
 
 export function validateCredentials(email: string, password: string) {
     const isAdmin = ADMIN_EMAILS.includes(email.toLowerCase().trim());
+    const isMentor = MENTOR_EMAILS.includes(email.toLowerCase().trim());
 
     // Admin login
     if (isAdmin) {
@@ -23,6 +26,19 @@ export function validateCredentials(email: string, password: string) {
             };
         }
         return null; // Wrong admin password
+    }
+
+    // Mentor login
+    if (isMentor) {
+        if (email === DEMO_USERS.mentor.email && password === DEMO_USERS.mentor.password) {
+            return {
+                id: 'mentor-001',
+                email: DEMO_USERS.mentor.email,
+                name: DEMO_USERS.mentor.name,
+                role: 'mentor' as const,
+            };
+        }
+        return null; // Wrong mentor password
     }
 
     // Participant: accept any email + password ≥ 4 chars

@@ -151,7 +151,7 @@ export default function AgentsPage() {
     return (
         <div className="min-h-screen aurora-bg">
             <Navbar />
-            <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
+            <div className="max-w-6xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                     <Button variant="ghost" onClick={() => setSelectedAgent(null)} className="mb-6 text-muted-foreground hover:text-white">
                         <ArrowLeft className="w-4 h-4 mr-2" /> Back to Agents

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Navbar from '@/components/shared/Navbar';
+import AdminTeamActions from '@/components/admin/AdminTeamActions';
 import { HACKATHON_CONFIG } from '@/lib/auth';
 import { toast } from 'sonner';
 import { Users, Search, Download, ChevronDown, ChevronUp, Mail, Phone } from 'lucide-react';
@@ -39,9 +40,9 @@ export default function EnrollmentsPage() {
     });
 
     const exportCSV = () => {
-        const headers = 'Team Name,Leader,Email,Phone,College,Domain,Members,Status,Enrolled At\n';
+        const headers = 'Team Name,Leader,Email,Phone,Employee ID,Organization,Domain,Members,Status,Enrolled At\n';
         const rows = filtered.map(t =>
-            `"${t.teamName}","${t.leader.name}","${t.leader.email}","${t.leader.phone}","${t.leader.college}","${t.domain}","${t.members.map(m => m.name).join('; ')}","${t.status}","${t.enrolledAt}"`
+            `"${t.teamName}","${t.leader.name}","${t.leader.email}","${t.leader.phone}","${t.leader.employeeId}","${t.leader.organization}","${t.domain}","${t.members.map(m => m.name).join('; ')}","${t.status}","${t.enrolledAt}"`
         ).join('\n');
         const blob = new Blob([headers + rows], { type: 'text/csv' });
         const url = URL.createObjectURL(blob);
@@ -119,7 +120,7 @@ export default function EnrollmentsPage() {
                                                     </div>
                                                     <div>
                                                         <p className="font-semibold">{team.teamName}</p>
-                                                        <p className="text-xs text-muted-foreground">{team.leader.name} • {team.leader.college}</p>
+                                                        <p className="text-xs text-muted-foreground">{team.leader.name} • {team.leader.organization}</p>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-3">
@@ -140,7 +141,7 @@ export default function EnrollmentsPage() {
                                                             <div className="space-y-2 text-sm">
                                                                 <p className="flex items-center gap-2"><Mail className="w-3 h-3 text-cyan" /> {team.leader.email}</p>
                                                                 <p className="flex items-center gap-2"><Phone className="w-3 h-3 text-cyan" /> {team.leader.phone}</p>
-                                                                <p>🎓 {team.leader.college} — {team.leader.department}</p>
+                                                                <p>🏢 {team.leader.organization}</p>
                                                             </div>
                                                         </div>
                                                         <div className="space-y-3">
@@ -160,7 +161,11 @@ export default function EnrollmentsPage() {
                                                         <h4 className="text-xs font-semibold text-muted-foreground mb-1">Problem Statement</h4>
                                                         <p className="text-sm">{team.problemStatement}</p>
                                                     </div>
-                                                    <p className="text-xs text-muted-foreground mt-3">Enrolled: {new Date(team.enrolledAt).toLocaleString()}</p>
+
+                                                    {/* Admin Team Actions Checklist & Messaging */}
+                                                    <AdminTeamActions team={team} />
+
+                                                    <p className="text-xs text-muted-foreground mt-4 text-right">Enrolled: {new Date(team.enrolledAt).toLocaleString()}</p>
                                                 </motion.div>
                                             )}
                                         </CardContent>

@@ -3,13 +3,13 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useAuthStore, useTeamStore } from '@/lib/store';
+import { useAuthStore, useTeamStore, useWinnersStore } from '@/lib/store';
 import ThemeToggle from '@/components/shared/ThemeToggle';
 import {
     LogOut, Menu, X,
     LayoutDashboard, Lightbulb, Code2, Rocket, Bot,
     Users, FileText, Megaphone, ClipboardList,
-    Home, UserPlus, Layers, Box
+    Home, UserPlus, Layers, Box, CheckSquare, Trophy
 } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import { toast } from 'sonner';
@@ -19,6 +19,7 @@ export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const { user, isAuthenticated, logout } = useAuthStore();
     const { teams } = useTeamStore();
+    const { isVisible: winnersVisible } = useWinnersStore();
     const router = useRouter();
     const pathname = usePathname();
 
@@ -43,14 +44,17 @@ export default function Navbar() {
         if (!isAuthenticated) return [
             { href: '/', label: 'Home', icon: <Home className="w-[14px] h-[14px]" /> },
             { href: '/enroll', label: 'Enroll', icon: <UserPlus className="w-[14px] h-[14px]" /> },
+            ...(winnersVisible ? [{ href: '/winners', label: 'Winners', icon: <Trophy className="w-[14px] h-[14px]" /> }] : []),
         ];
 
         if (user?.role === 'admin') return [
             { href: '/admin', label: 'Overview', icon: <LayoutDashboard className="w-[14px] h-[14px]" /> },
             { href: '/admin/enrollments', label: 'Teams', icon: <Users className="w-[14px] h-[14px]" /> },
+            { href: '/admin/checklist', label: 'Phase Gating', icon: <CheckSquare className="w-[14px] h-[14px]" /> },
             { href: '/admin/submissions', label: 'Submissions', icon: <FileText className="w-[14px] h-[14px]" /> },
             { href: '/admin/hackathon', label: 'Hackathon', icon: <ClipboardList className="w-[14px] h-[14px]" /> },
             { href: '/admin/announcements', label: 'Announce', icon: <Megaphone className="w-[14px] h-[14px]" /> },
+            { href: '/admin/winners', label: 'Winners', icon: <Trophy className="w-[14px] h-[14px]" /> },
         ];
 
         // Participant — always show all sections
@@ -62,6 +66,7 @@ export default function Navbar() {
             { href: '/dashboard/development', label: 'Build', icon: <Code2 className="w-[14px] h-[14px]" /> },
             { href: '/dashboard/hackathon', label: 'Hackathon', icon: <Rocket className="w-[14px] h-[14px]" /> },
             { href: '/dashboard/agents', label: 'AI Agents', icon: <Bot className="w-[14px] h-[14px]" /> },
+            ...(winnersVisible ? [{ href: '/winners', label: 'Winners', icon: <Trophy className="w-[14px] h-[14px]" /> }] : []),
         ];
     })();
 
@@ -79,7 +84,7 @@ export default function Navbar() {
             <nav className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-400 px-4 pt-4 sm:pt-6 h-[88px] pointer-events-none`}>
                 <div
                     className={`mx-auto transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-between glass shadow-lg border border-[var(--border)] relative overflow-hidden pointer-events-auto ${scrolled
-                        ? 'max-w-5xl h-14 rounded-full px-4 translate-y-1 bg-white/70 dark:bg-black/40 backdrop-blur-xl'
+                        ? 'max-w-6xl h-14 rounded-full px-4 translate-y-1 bg-white/70 dark:bg-black/40 backdrop-blur-xl'
                         : 'max-w-7xl h-16 rounded-[1.25rem] px-5 sm:px-6 bg-white/50 dark:bg-black/20'
                         }`}
                 >

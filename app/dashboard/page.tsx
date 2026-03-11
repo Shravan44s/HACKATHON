@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { useAuthStore, useAuthHydrated, useTeamStore, usePhaseStore, useAnnouncementStore, useScoreStore, useSubmissionStore } from '@/lib/store';
 import Navbar from '@/components/shared/Navbar';
 import PhaseStepper from '@/components/shared/PhaseStepper';
+import ManageTeamDialog from '@/components/dashboard/ManageTeamDialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -138,7 +139,11 @@ export default function ParticipantDashboard() {
 
                     {/* Phase Stepper */}
                     <div className="mb-8 p-6 glass rounded-2xl glow-border">
-                        <PhaseStepper currentPhase={currentPhase as Phase} completedPhases={completedPhases as Phase[]} />
+                        <PhaseStepper
+                            currentPhase={currentPhase as Phase}
+                            completedPhases={completedPhases as Phase[]}
+                            lockedPhases={phases.filter(p => !p.active && p.order > (activePhasesArr[0]?.order ?? 0)).map(p => p.id) as Phase[]}
+                        />
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -162,7 +167,7 @@ export default function ParticipantDashboard() {
                                     </p>
                                     {currentPhaseLink && (
                                         <Link href={currentPhaseLink.href}>
-                                            <Button className="bg-violet hover:bg-violet-dark text-white">
+                                            <Button className="bg-gradient-to-r bg-[var(--primary)]">
                                                 {currentPhaseLink.icon}
                                                 <span className="ml-2">{currentPhaseLink.label}</span>
                                                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -261,6 +266,11 @@ export default function ParticipantDashboard() {
                                                 </div>
                                             ))}
                                         </div>
+
+                                        {/* Show Manage Team dialog if user is leader */}
+                                        {user?.email === team.leader.email && (
+                                            <ManageTeamDialog team={team} currentPhase={currentPhase as Phase} />
+                                        )}
                                     </CardContent>
                                 </Card>
                             )}

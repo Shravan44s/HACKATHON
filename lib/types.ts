@@ -1,6 +1,6 @@
 export type Phase = 'enrollment' | 'ideation' | 'development' | 'hackathon' | 'results';
 
-export type UserRole = 'admin' | 'participant';
+export type UserRole = 'admin' | 'participant' | 'mentor';
 
 export type SubmissionStatus = 'draft' | 'submitted' | 'under_review' | 'feedback_received' | 'approved' | 'rejected';
 
@@ -10,6 +10,7 @@ export interface TeamMember {
   id: string;
   name: string;
   email: string;
+  employeeId: string;
   role: string;
 }
 
@@ -20,8 +21,8 @@ export interface Team {
     name: string;
     email: string;
     phone: string;
-    college: string;
-    department: string;
+    employeeId: string;
+    organization: string;
   };
   members: TeamMember[];
   domain: string;
@@ -29,6 +30,7 @@ export interface Team {
   status: TeamStatus;
   enrolledAt: string;
   teamSize: number;
+  checklist?: Record<string, boolean>;
 }
 
 export interface FileAttachment {
@@ -112,15 +114,15 @@ export interface AgentSession {
   createdAt: string;
 }
 
-export type AgentType = 
-  | 'guide' 
-  | 'idea' 
-  | 'pitch' 
-  | 'code' 
-  | 'image' 
-  | 'logo' 
-  | 'readme' 
-  | 'coach' 
+export type AgentType =
+  | 'guide'
+  | 'idea'
+  | 'pitch'
+  | 'code'
+  | 'image'
+  | 'logo'
+  | 'readme'
+  | 'coach'
   | 'techstack';
 
 export interface User {
@@ -129,6 +131,12 @@ export interface User {
   name: string;
   role: UserRole;
   teamId?: string;
+}
+
+export interface ChecklistItem {
+  id: string;
+  label: string;
+  createdAt: string;
 }
 
 export interface PhaseConfig {

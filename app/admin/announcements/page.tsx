@@ -67,7 +67,7 @@ export default function AnnouncementsPage() {
     return (
         <div className="min-h-screen aurora-bg">
             <Navbar />
-            <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
+            <div className="max-w-6xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                     <h1 className="font-display text-3xl font-bold flex items-center gap-2 mb-8">
                         <Megaphone className="w-8 h-8 text-[var(--primary)]" /> Announcements

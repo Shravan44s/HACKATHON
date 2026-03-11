@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hackathonUpdateSchema, type HackathonUpdateFormData } from '@/lib/validators';
-import { useAuthStore, useAuthHydrated, useTeamStore, useSubmissionStore } from '@/lib/store';
+import { useAuthStore, useAuthHydrated, useTeamStore, useSubmissionStore, usePhaseStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,7 +20,7 @@ import FileUpload from '@/components/shared/FileUpload';
 import { HACKATHON_CONFIG } from '@/lib/auth';
 import { toast } from 'sonner';
 import type { FileAttachment } from '@/lib/types';
-import { Zap, Send, Loader2, MessageCircle, Link2, AlertTriangle } from 'lucide-react';
+import { Zap, Send, Loader2, MessageCircle, Link2, AlertTriangle, Lock } from 'lucide-react';
 
 export default function HackathonPage() {
     const [mounted, setMounted] = useState(false);
@@ -32,6 +32,7 @@ export default function HackathonPage() {
     const hydrated = useAuthHydrated();
     const { teams } = useTeamStore();
     const { submissions, addSubmission } = useSubmissionStore();
+    const { phases } = usePhaseStore();
 
     useEffect(() => {
         setMounted(true);
@@ -76,10 +77,32 @@ export default function HackathonPage() {
 
     if (!mounted || !user) return null;
 
+    const isPhaseActive = phases.find(p => p.id === 'hackathon')?.active ?? false;
+
+    if (!isPhaseActive) {
+        return (
+            <div className="min-h-screen aurora-bg">
+                <Navbar />
+                <div className="max-w-xl mx-auto px-4 pt-32 pb-16 text-center">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                        <div className="w-16 h-16 mx-auto rounded-2xl bg-red-500/10 flex items-center justify-center mb-6">
+                            <Lock className="w-8 h-8 text-red-400" />
+                        </div>
+                        <h1 className="text-3xl font-display font-bold mb-3">Phase Locked</h1>
+                        <p className="text-muted-foreground mb-6">The <strong>24h Hackathon</strong> phase has not been activated by the admin yet. Please check back later.</p>
+                        <Button onClick={() => router.push('/dashboard')} className="bg-[var(--primary)] text-[var(--primary-foreground)]">
+                            Back to Dashboard
+                        </Button>
+                    </motion.div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen aurora-bg">
             <Navbar />
-            <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
+            <div className="max-w-6xl mx-auto px-4 pt-24 pb-16">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                     <div className="text-center mb-6">
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
@@ -159,7 +182,7 @@ export default function HackathonPage() {
                                     </Card>
                                 )}
 
-                                <Button type="submit" disabled={loading || hasFinalSubmission} className={`w-full py-5 rounded-xl font-semibold ${isFinal ? 'bg-gradient-to-r from-red-500 to-red-600' : 'bg-gradient-to-r from-violet to-cyan'} text-white`}>
+                                <Button type="submit" disabled={loading || hasFinalSubmission} className="w-full bg-gradient-to-r bg-[var(--primary)] text-[var(--primary-foreground)] py-6 text-lg font-semibold rounded-xl">
                                     {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Send className="w-4 h-4 mr-2" />}
                                     {isFinal ? '🏁 Lock Final Submission' : 'Push Update'}
                                 </Button>
